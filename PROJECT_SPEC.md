@@ -5,6 +5,7 @@
 **Time budget:** ~7 days, part-time alongside coursework. Roughly 12–18 hours total.
 **Compute budget:** Must run start-to-finish in under 20 minutes on free Colab (T4) or a laptop CPU.
 
+
 ---
 
 ## 1. The question in plain terms
