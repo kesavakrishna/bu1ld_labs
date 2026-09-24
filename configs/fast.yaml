@@ -1,0 +1,61 @@
+# Small version of full.yaml, for a quick check that the whole pipeline runs.
+# Identical to full.yaml except the lines marked "CHANGED". Never used for results.
+
+device: cuda                         # uses the CPU if there's no GPU (slower, but works)
+data_dir: data/fast                  # CHANGED, so it never overwrites the full dataset
+results_dir: results/fast            # CHANGED
+
+simulator:
+  n_points: 256
+  viscosity: 0.001
+  dt_solver: 0.001
+  steps_per_save: 5
+  n_saves: 200
+
+initial_conditions:
+  n_modes: 5
+  decay: 1.0
+  amplitude: 0.5
+
+data:
+  seed: 0
+  test_seed: 99          # CHANGED, so this never overlaps the full run's frozen test split
+  n_train: 200           # CHANGED
+  n_calibration: 50      # CHANGED
+  n_dev: 50              # CHANGED
+  n_test: 50             # CHANGED
+
+model:
+  modes: 16
+  width: 64
+  n_layers: 4
+  predict: direct
+
+training:
+  seeds: [0]             # CHANGED
+  pairs_per_trajectory: 100   # CHANGED: fewer trajectories, so more pairs from each
+  epochs: 40             # CHANGED
+  batch_size: 256
+  learning_rate: 0.002
+  max_single_step_error: 0.01
+
+signals:
+  hook_layer: 3
+  n_reference: 100       # CHANGED
+
+leadtime:
+  false_alarm_rate: 0.05
+  safe_fraction: 0.5
+  failure_threshold_sweep: [0.02, 0.05, 0.10, 0.20, 0.50, 1.00]
+
+rollout:
+  failure_threshold: 0.10
+  min_failing_fraction: 0.70
+  min_median_failure_step: 30
+
+solver_checks:
+  seed: 12345
+  n_trajectories: 5      # CHANGED
+  fine_points: 1024
+  max_resolution_error: 0.01
+  max_energy_rise: 0.00001

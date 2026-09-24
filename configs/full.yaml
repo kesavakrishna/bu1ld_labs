@@ -1,0 +1,66 @@
+# Settings for the full run, on the RTX 4060 laptop GPU.
+# Every number the code uses lives in this file. See PROJECT_PLAN.md for what each one is for.
+
+device: cuda                         # "cuda" = GPU, "cpu" = CPU. Uses the CPU if no GPU is found.
+data_dir: data                       # generated trajectories (about 270 MB, not committed to git)
+results_dir: results                 # figures and numbers
+
+simulator:
+  n_points: 256          # grid points around the ring
+  viscosity: 0.001       # smoothing strength; lower means sharper shocks
+  dt_solver: 0.001       # the simulator's tiny time step
+  steps_per_save: 5      # tiny steps between saved snapshots, so one saved step = 0.005 time units.
+                         # At 0.02 the model's errors all arrived in a 15-step burst while shocks
+                         # formed, leaving no room to warn. A smaller step spreads the same physics
+                         # over more steps, so the error grows gradually (Day 3).
+  n_saves: 200           # saved steps per trajectory, after the starting wave (the rollout length)
+
+initial_conditions:
+  n_modes: 5             # how many sine waves are added together to make a starting wave
+  decay: 1.0             # finer sine waves are made smaller: size is divided by mode**decay
+  amplitude: 0.5         # every starting wave is rescaled so its highest point is this tall.
+                         # At 1.0, shocks got too thin for 256 points (4% off the 1024-point run).
+
+data:
+  seed: 0                # draws the train, calibration and dev splits
+  test_seed: 20260924    # draws the test split, which stayed unseen until the frozen run (FREEZE.md)
+  n_train: 1000
+  n_calibration: 200
+  n_dev: 100             # for setup checks on Days 2-4. Called "test" before the freeze.
+  n_test: 100
+
+model:
+  modes: 16              # how many of the broadest sine-wave modes each layer keeps
+  width: 64              # channels used inside the network
+  n_layers: 4            # Fourier layers
+  predict: direct        # "direct" predicts the next wave; "residual" predicts the change
+
+training:
+  seeds: [0, 1, 2]              # one model per seed; changes starting weights and data order
+  pairs_per_trajectory: 20      # random (wave, next wave) pairs taken from each trajectory
+  epochs: 100
+  batch_size: 256               # big batches keep the GPU busy; 64 was 3.5x slower per epoch
+  learning_rate: 0.002          # raised a little to match the bigger batch
+  max_single_step_error: 0.01   # Day 2 passes if the test error is below this
+
+signals:
+  hook_layer: 3          # which Fourier layer the hook reads (1 = first; 3 is second to last)
+  n_reference: 200       # training trajectories used to learn what each signal normally looks like
+
+leadtime:                        # FROZEN before the test split was scored (FREEZE.md)
+  false_alarm_rate: 0.05         # every alarm is tuned so this share of calibration rollouts false-alarm
+  safe_fraction: 0.5             # the safe window is the steps before this fraction of the failure step
+  failure_threshold_sweep: [0.02, 0.05, 0.10, 0.20, 0.50, 1.00]   # secondary analysis only
+
+rollout:
+  failure_threshold: 0.10        # relative error that counts as "this rollout has failed"
+  min_failing_fraction: 0.70     # gate: at least this share of test rollouts must fail
+  min_median_failure_step: 30    # gate: the median failure step must be at least this late.
+                                 # Started at 40; lowered on Day 3, see PROJECT_PLAN.md Section 8.
+
+solver_checks:
+  seed: 12345                 # different from data.seed, so the checks use fresh waves
+  n_trajectories: 20
+  fine_points: 1024           # the finer grid we compare against
+  max_resolution_error: 0.01  # 256-point and 1024-point runs must agree within 1%
+  max_energy_rise: 0.00001    # energy must not rise; this tiny allowance is only for rounding

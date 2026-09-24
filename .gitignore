@@ -1,0 +1,9 @@
+__pycache__/
+
+# The generated dataset (about 270 MB).
+data/
+
+# Generated results. Only the final figure and its numbers are committed.
+results/*
+!results/leadtime.png
+!results/summary.json
