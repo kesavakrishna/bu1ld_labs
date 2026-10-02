@@ -59,7 +59,8 @@ def save_figure(aligned, examples, offsets, threshold, path):
     colour = {"relative_error": "#52514e", **{n: "#2a78d6" for n in INTERNAL}, **{n: "#eb6834" for n in OUTPUT}}
     kind = {**{n: "internal" for n in INTERNAL}, **{n: "output-side" for n in OUTPUT}}
 
-    fig, axes = plt.subplots(2, 3, figsize=(15, 8.5), sharex=True, constrained_layout=True)
+    fig, axes = plt.subplots(2, 4, figsize=(19, 8.5), sharex=True, constrained_layout=True)
+    axes.flat[-1].set_visible(False)  # 7 panels on a 2 x 4 grid
     for ax, name in zip(axes.flat, ["relative_error"] + SIGNALS):
         windows = np.minimum(aligned[name], DISPLAY_CAP)
         scale = 100 if name == "relative_error" else 1

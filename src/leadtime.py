@@ -1,28 +1,35 @@
 """
-Tune every alarm fairly on calibration rollouts, then measure how much warning each one
-gives on test rollouts (Days 5 and 6).
+Tune every alarm fairly, then measure how much warning each one gives, in every setting
+(Days 5 and 6, and the shift sprint).
 
-THE RULES IN THIS FILE ARE FROZEN (see FREEZE.md). They were fixed before the test split
-was scored, and must not be changed after seeing any result.
+THE RULES IN THIS FILE ARE FROZEN (see FREEZE.md). They were fixed before any test or shift
+data was scored, and must not be changed after seeing any result.
 
 For each seed:
-  1. Tune, on calibration rollouts only. Each alarm gets the threshold that gives
-     `false_alarm_rate` of calibration rollouts a false alarm, meaning an alarm inside the
-     safe window. The clock is tuned by the same rule, so every alarm is equally trigger-happy.
-  2. Score, on test rollouts only, with the thresholds frozen. For each failing rollout,
-     find the first step each alarm goes off. Lead time = failure step - alarm step.
+  1. Tune, on calibration rollouts only. These use the physics the model was trained on,
+     just as a real user would only have data from the setting they built the model for.
+     Each alarm gets the threshold that gives `false_alarm_rate` of calibration rollouts a
+     false alarm (an alarm inside the safe window). The clock is tuned by the same rule.
+  2. Score every setting with those thresholds frozen: the control (the test split, same
+     physics as training) and each shift setting. For each failing rollout, find the first
+     step each alarm goes off. Lead time = failure step - alarm step.
 
-Then, across seeds: each alarm's lead time, detection rate and false-alarm rate; head-to-head
-differences, rollout by rollout; and the verdict. The whole analysis is repeated at other
-failure thresholds as a secondary check.
+Reported per setting: lead time, detection rate, false-alarm rate, head-to-head
+comparisons and the verdict; then an overall verdict across settings. Also repeated at
+other failure thresholds, and at other false-alarm targets (the trade-off curve).
 
-Every number goes to results/summary.json, and the per-rollout numbers behind the figure to
-results/leadtimes.npz.
+Outputs:
+    results/summary.json            every reported number
+    results/leadtimes.csv           one row per setting, seed, rollout and alarm
+    results/rollout_steps.csv.gz    one row per setting, seed, rollout and step: the error and
+                                    every score, so anything here can be recomputed from scratch
 
     python src/leadtime.py --config configs/full.yaml
 """
 
 import argparse
+import csv
+import gzip
 import json
 from pathlib import Path
 
@@ -32,7 +39,9 @@ import yaml
 from signals import INTERNAL, OUTPUT, SIGNALS
 
 ALARMS = SIGNALS + ["clock"]
-PAIRS = [(i, o) for i in INTERNAL for o in OUTPUT] + [(name, "clock") for name in SIGNALS]
+KIND = {**{n: "internal" for n in INTERNAL}, **{n: "output" for n in OUTPUT}, "clock": "baseline"}
+HEAD_TO_HEAD = [(i, o) for i in INTERNAL for o in OUTPUT]
+AGAINST_CLOCK = [(name, "clock") for name in SIGNALS]
 
 
 def failure_steps(relative_error, threshold):
@@ -96,31 +105,35 @@ def tune_clock(window_end, false_alarm_rate, horizon):
     return horizon
 
 
-def evaluate_seed(calibration, test, failure_threshold, settings):
+def tune(calibration, failure_threshold, false_alarm_rate, safe_fraction):
+    """Thresholds for every alarm, from calibration rollouts only."""
+    horizon = calibration["relative_error"].shape[1] - 1
+    failed_at = failure_steps(calibration["relative_error"], failure_threshold)
+    window_end = safe_window_ends(failed_at, horizon, safe_fraction)
+    thresholds = {name: tune_threshold(calibration[f"score_{name}"], window_end, false_alarm_rate) for name in SIGNALS}
+    thresholds["clock"] = tune_clock(window_end, false_alarm_rate, horizon)
+    return thresholds
+
+
+def score_rollouts(rollouts, thresholds, failure_threshold, safe_fraction):
     """
-    Tune every alarm on calibration rollouts, then find when each first goes off on test
-    rollouts. Returns the thresholds, the test failure steps, the test safe-window ends,
-    and each alarm's first alarm step on every test rollout.
+    Apply frozen thresholds to one set of rollouts. Returns each rollout's failure step,
+    the end of its safe window, and the first alarm step of every alarm.
     """
-    rate, fraction = settings["false_alarm_rate"], settings["safe_fraction"]
-    horizon = test["relative_error"].shape[1] - 1
-
-    calibration_end = safe_window_ends(failure_steps(calibration["relative_error"], failure_threshold), horizon, fraction)
-    test_fail = failure_steps(test["relative_error"], failure_threshold)
-    test_end = safe_window_ends(test_fail, horizon, fraction)
-
-    thresholds, alarm_step = {}, {}
-    for name in SIGNALS:
-        thresholds[name] = tune_threshold(calibration[f"score_{name}"], calibration_end, rate)
-        alarm_step[name] = first_alarm(test[f"score_{name}"], thresholds[name])
-    thresholds["clock"] = tune_clock(calibration_end, rate, horizon)
-    alarm_step["clock"] = np.full(len(test_fail), thresholds["clock"])
-
-    return thresholds, test_fail, test_end, alarm_step
+    horizon = rollouts["relative_error"].shape[1] - 1
+    failed_at = failure_steps(rollouts["relative_error"], failure_threshold)
+    window_end = safe_window_ends(failed_at, horizon, safe_fraction)
+    alarm_step = {name: first_alarm(rollouts[f"score_{name}"], thresholds[name]) for name in SIGNALS}
+    alarm_step["clock"] = np.full(len(failed_at), thresholds["clock"])
+    return failed_at, window_end, alarm_step
 
 
 def median(values):
     return float(np.median(values)) if len(values) else float("nan")
+
+
+def share(flags):
+    return float(np.mean(flags)) if len(flags) else float("nan")
 
 
 def describe(values):
@@ -131,89 +144,108 @@ def describe(values):
     return {"median": float(middle), "q25": float(q25), "q75": float(q75)}
 
 
-def analyse(rollouts, failure_threshold, settings):
+def analyse_setting(by_seed, failure_threshold, settings, false_alarm_rate):
     """
-    The full analysis at one failure threshold, for every seed.
+    The full analysis of one setting at one failure threshold, for every seed.
 
     Args:
-        rollouts: {seed: (calibration, test)}, each a dict of arrays saved by rollout.py
+        by_seed: {seed: (calibration rollouts, rollouts to score)}, as saved by rollout.py
 
     Returns:
-        summary: every reported number, ready to save as JSON
-        leads:   {seed: {alarm: lead times on that seed's failing test rollouts}}
+        summary: every reported number for this setting
+        rows:    one dict per seed, rollout and alarm (the raw record)
     """
-    summary = {"failure_threshold": failure_threshold, "seeds": {}, "alarms": {}, "head_to_head": {}}
-    leads, false_alarms = {}, {}
+    summary = {"seeds": {}, "alarms": {}, "head_to_head": {}}
+    leads, false_alarms, rows = {}, {}, []
 
-    for seed, (calibration, test) in rollouts.items():
-        thresholds, test_fail, test_end, alarm_step = evaluate_seed(calibration, test, failure_threshold, settings)
-        failing = test_fail >= 0
-        leads[seed] = {name: test_fail[failing] - step[failing] for name, step in alarm_step.items()}
-        false_alarms[seed] = {name: step < test_end for name, step in alarm_step.items()}
+    for seed, (calibration, rollouts) in by_seed.items():
+        thresholds = tune(calibration, failure_threshold, false_alarm_rate, settings["safe_fraction"])
+        failed_at, window_end, alarm_step = score_rollouts(rollouts, thresholds, failure_threshold, settings["safe_fraction"])
+        failing = failed_at >= 0
+        leads[seed] = {name: failed_at[failing] - step[failing] for name, step in alarm_step.items()}
+        false_alarms[seed] = {name: step < window_end for name, step in alarm_step.items()}
         summary["seeds"][seed] = {
-            "test_rollouts": int(len(test_fail)),
+            "rollouts": int(len(failed_at)),
             "failing": int(failing.sum()),
+            "median_failure_step": median(failed_at[failing]),
             "thresholds": {name: float(value) for name, value in thresholds.items()},
         }
+        for i, trajectory in enumerate(rollouts["ids"]):
+            for name in ALARMS:
+                fails = bool(failing[i])
+                rows.append({
+                    "seed": seed, "trajectory_id": int(trajectory), "alarm": name, "alarm_type": KIND[name],
+                    "threshold": thresholds[name], "failure_step": int(failed_at[i]), "alarm_step": int(alarm_step[name][i]),
+                    "lead_time": int(failed_at[i] - alarm_step[name][i]) if fails else "",
+                    "detected": int(alarm_step[name][i] < failed_at[i]) if fails else "",
+                    "false_alarm": int(false_alarms[seed][name][i]),
+                })
 
-    seeds = list(rollouts)
+    seeds = list(by_seed)
     for name in ALARMS:
         pooled = np.concatenate([leads[s][name] for s in seeds])
         summary["alarms"][name] = {
             "lead_time": describe(pooled),
             "lead_time_median_by_seed": {s: median(leads[s][name]) for s in seeds},
-            "detection_rate": float(np.mean(pooled > 0)) if len(pooled) else float("nan"),
-            "detection_rate_by_seed": {s: float(np.mean(leads[s][name] > 0)) for s in seeds},
-            "false_alarm_rate": float(np.mean(np.concatenate([false_alarms[s][name] for s in seeds]))),
+            "detection_rate": share(pooled > 0),
+            "detection_rate_by_seed": {s: share(leads[s][name] > 0) for s in seeds},
+            "false_alarm_rate": share(np.concatenate([false_alarms[s][name] for s in seeds])),
+            "false_alarm_rate_by_seed": {s: share(false_alarms[s][name]) for s in seeds},
         }
 
-    for a, b in PAIRS:
-        by_seed = {s: leads[s][a] - leads[s][b] for s in seeds}
-        pooled = np.concatenate(list(by_seed.values()))
+    for a, b in HEAD_TO_HEAD + AGAINST_CLOCK:
+        by_seed_difference = {s: leads[s][a] - leads[s][b] for s in seeds}
+        pooled = np.concatenate(list(by_seed_difference.values()))
         summary["head_to_head"][f"{a} vs {b}"] = {
             "difference": describe(pooled),
-            "difference_median_by_seed": {s: median(d) for s, d in by_seed.items()},
-            "wins": float(np.mean(pooled > 0)),
-            "ties": float(np.mean(pooled == 0)),
-            "losses": float(np.mean(pooled < 0)),
+            "difference_median_by_seed": {s: median(d) for s, d in by_seed_difference.items()},
+            "wins": share(pooled > 0),
+            "ties": share(pooled == 0),
+            "losses": share(pooled < 0),
         }
 
-    summary["verdict"] = {
-        "rule": ("Internal signals beat the output-only baselines if at least one internal alarm has a median "
-                 "lead-time difference above zero against BOTH output-side alarms, in EVERY seed."),
-        "supported": any(
-            all(summary["head_to_head"][f"{i} vs {o}"]["difference_median_by_seed"][s] > 0 for o in OUTPUT for s in seeds)
-            for i in INTERNAL
-        ),
-    }
-    return summary, leads
+    # The verdict: some internal alarm must beat EVERY output-side alarm in EVERY seed.
+    summary["supported"] = any(
+        all(summary["head_to_head"][f"{i} vs {o}"]["difference_median_by_seed"][s] > 0 for o in OUTPUT for s in seeds)
+        for i in INTERNAL
+    )
+    return summary, rows
 
 
-def print_report(summary):
-    alarms, pairs = summary["alarms"], summary["head_to_head"]
-    kind = {**{n: "internal" for n in INTERNAL}, **{n: "output" for n in OUTPUT}, "clock": "baseline"}
+def analyse(rollouts, failure_threshold, settings, false_alarm_rate):
+    """Every setting at one failure threshold, plus the overall verdict."""
+    result = {"failure_threshold": failure_threshold, "settings": {}}
+    rows = []
+    for setting, by_seed in rollouts.items():
+        result["settings"][setting], setting_rows = analyse_setting(by_seed, failure_threshold, settings, false_alarm_rate)
+        rows += [{"setting": setting, **row} for row in setting_rows]
+    supported = [name for name, s in result["settings"].items() if s["supported"]]
+    result["settings_supported"] = supported
+    result["overall_supported"] = len(supported) >= settings["min_settings_supported"]
+    return result, rows
 
-    print(f"\n  {'alarm':>15} {'type':>9} {'median lead':>12} {'IQR':>12} {'detected':>9} {'false alarms':>13}   median by seed")
-    for name in ALARMS:
-        a = alarms[name]
+
+def print_setting(name, summary):
+    print(f"\n  {name}: {sum(s['failing'] for s in summary['seeds'].values())} of "
+          f"{sum(s['rollouts'] for s in summary['seeds'].values())} rollouts fail")
+    print(f"  {'alarm':>15} {'type':>9} {'median lead':>12} {'IQR':>12} {'detected':>9} {'false alarms':>13}   median by seed")
+    for alarm in ALARMS:
+        a = summary["alarms"][alarm]
         lead = a["lead_time"]
         spread = f"[{lead['q25']:.0f}, {lead['q75']:.0f}]"
         by_seed = " / ".join(f"{m:.0f}" for m in a["lead_time_median_by_seed"].values())
-        print(f"  {name:>15} {kind[name]:>9} {lead['median']:>12.0f} {spread:>12} "
+        print(f"  {alarm:>15} {KIND[alarm]:>9} {lead['median']:>12.0f} {spread:>12} "
               f"{100 * a['detection_rate']:>8.0f}% {100 * a['false_alarm_rate']:>12.0f}%   {by_seed}")
-
-    print("\n  Head-to-head: internal minus other lead time, per failing test rollout")
-    for pair, p in pairs.items():
+    print("  head-to-head, internal minus output-side lead time (median by seed):")
+    for a, b in HEAD_TO_HEAD:
+        p = summary["head_to_head"][f"{a} vs {b}"]
         by_seed = " / ".join(f"{m:.0f}" for m in p["difference_median_by_seed"].values())
-        print(f"  {pair:>33}   median {p['difference']['median']:>5.0f}   wins {100 * p['wins']:>3.0f}%  "
-              f"ties {100 * p['ties']:>3.0f}%  losses {100 * p['losses']:>3.0f}%   by seed {by_seed}")
-
-    verdict = "SUPPORTED" if summary["verdict"]["supported"] else "NOT SUPPORTED"
-    print(f"\n  Verdict: {summary['verdict']['rule']}\n  -> {verdict}")
+        print(f"  {f'{a} vs {b}':>33}   {by_seed:>14}   wins {100 * p['wins']:>3.0f}%  losses {100 * p['losses']:>3.0f}%")
+    print(f"  -> {'SUPPORTED' if summary['supported'] else 'NOT SUPPORTED'} in this setting")
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Tune alarms on calibration, measure lead times on test.")
+    parser = argparse.ArgumentParser(description="Tune alarms on calibration, measure lead times in every setting.")
     parser.add_argument("--config", default="configs/full.yaml")
     args = parser.parse_args()
 
@@ -222,48 +254,86 @@ def main():
     settings = config["leadtime"]
     results_dir = Path(config["results_dir"])
     rollout_dir = results_dir / "rollouts"
+    seeds = config["training"]["seeds"]
 
+    # The control is the test split; every other setting is a shift.
+    files = {"control": "test", **{name: f"shift_{name}" for name in config["shifts"]["settings"]}}
+    calibration = {seed: dict(np.load(rollout_dir / f"calibration_seed{seed}.npz")) for seed in seeds}
     rollouts = {
-        seed: (dict(np.load(rollout_dir / f"calibration_seed{seed}.npz")), dict(np.load(rollout_dir / f"test_seed{seed}.npz")))
-        for seed in config["training"]["seeds"]
+        setting: {seed: (calibration[seed], dict(np.load(rollout_dir / f"{file}_seed{seed}.npz"))) for seed in seeds}
+        for setting, file in files.items()
     }
 
     # Primary result.
     primary = config["rollout"]["failure_threshold"]
-    summary, leads = analyse(rollouts, primary, settings)
-    summary["false_alarm_rate_target"] = settings["false_alarm_rate"]
+    rate = settings["false_alarm_rate"]
+    summary, rows = analyse(rollouts, primary, settings, rate)
+    summary["false_alarm_rate_target"] = rate
+    summary["verdict_rule"] = (
+        "In each setting: supported if at least one internal alarm has a median lead-time difference above zero "
+        f"against EVERY output-side alarm, in EVERY seed. Overall: supported in at least "
+        f"{settings['min_settings_supported']} of {len(files)} settings."
+    )
     print(f"\nPrimary result: failure = relative error above {100 * primary:.0f}%, "
-          f"every alarm tuned to {100 * settings['false_alarm_rate']:.0f}% false alarms on calibration")
-    print_report(summary)
+          f"every alarm tuned to {100 * rate:.0f}% false alarms on calibration (original physics)")
+    for setting, setting_summary in summary["settings"].items():
+        print_setting(setting, setting_summary)
+    print(f"\n  Verdict rule: {summary['verdict_rule']}")
+    print(f"  Supported in: {summary['settings_supported'] or 'no setting'}")
+    print(f"  -> OVERALL: {'SUPPORTED' if summary['overall_supported'] else 'NOT SUPPORTED'}")
+
+    # Descriptive: detection against false alarms as the alarms are made stricter or looser.
+    summary["tradeoff"] = {setting: {alarm: [] for alarm in ALARMS} for setting in files}
+    for target in settings["tradeoff_rates"]:
+        result, _ = analyse(rollouts, primary, settings, target)
+        for setting, s in result["settings"].items():
+            for alarm in ALARMS:
+                summary["tradeoff"][setting][alarm].append({
+                    "target": target,
+                    "false_alarm_rate": s["alarms"][alarm]["false_alarm_rate"],
+                    "detection_rate": s["alarms"][alarm]["detection_rate"],
+                })
 
     # Secondary: the same analysis at other failure thresholds.
     summary["sweep"] = {}
-    print("\nSecondary: the same analysis at other failure thresholds (median lead time / detection rate)")
-    print(f"  {'failure at':>10} {'failing':>8}  " + "  ".join(f"{name:>15}" for name in ALARMS) + "   verdict")
+    print("\nSecondary: other failure thresholds (settings where the internal signals are supported)")
     for threshold in settings["failure_threshold_sweep"]:
-        swept, _ = analyse(rollouts, threshold, settings)
-        failing = sum(s["failing"] for s in swept["seeds"].values()) / sum(s["test_rollouts"] for s in swept["seeds"].values())
+        result, _ = analyse(rollouts, threshold, settings, rate)
         summary["sweep"][str(threshold)] = {
-            "failing_share": failing,
-            "supported": swept["verdict"]["supported"],
-            "lead_time_median": {n: swept["alarms"][n]["lead_time"]["median"] for n in ALARMS},
-            "detection_rate": {n: swept["alarms"][n]["detection_rate"] for n in ALARMS},
+            setting: {
+                "supported": s["supported"],
+                "failing_share": sum(x["failing"] for x in s["seeds"].values()) / sum(x["rollouts"] for x in s["seeds"].values()),
+                "lead_time_median": {n: s["alarms"][n]["lead_time"]["median"] for n in ALARMS},
+                "detection_rate": {n: s["alarms"][n]["detection_rate"] for n in ALARMS},
+                "false_alarm_rate": {n: s["alarms"][n]["false_alarm_rate"] for n in ALARMS},
+            }
+            for setting, s in result["settings"].items()
         }
-        cells = []
-        for n in ALARMS:
-            a = swept["alarms"][n]
-            cells.append(f"{a['lead_time']['median']:.0f} / {100 * a['detection_rate']:.0f}%")
-        verdict = "supported" if swept["verdict"]["supported"] else "not supported"
-        print(f"  {100 * threshold:>9.0f}% {100 * failing:>7.0f}%  " + "  ".join(f"{c:>15}" for c in cells) + f"   {verdict}")
+        summary["sweep"][str(threshold)]["overall_supported"] = result["overall_supported"]
+        print(f"  failure at {100 * threshold:>4.0f}%: supported in {result['settings_supported'] or 'no setting'}"
+              f" -> overall {'supported' if result['overall_supported'] else 'not supported'}")
 
     with open(results_dir / "summary.json", "w") as f:
         json.dump(summary, f, indent=2)
-    np.savez(
-        results_dir / "leadtimes.npz",
-        **{f"lead_{name}": np.concatenate([leads[s][name] for s in leads]) for name in ALARMS},
-        **{f"difference_{a}_vs_{b}": np.concatenate([leads[s][a] - leads[s][b] for s in leads]) for a, b in PAIRS},
-    )
-    print(f"\n  Saved {results_dir / 'summary.json'} and {results_dir / 'leadtimes.npz'}")
+    with open(results_dir / "leadtimes.csv", "w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=list(rows[0]))
+        writer.writeheader()
+        writer.writerows(rows)
+
+    # The per-step record behind everything above.
+    with gzip.open(results_dir / "rollout_steps.csv.gz", "wt", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow(["setting", "seed", "trajectory_id", "step", "relative_error", "raw_error", "true_size"]
+                        + [f"score_{name}" for name in SIGNALS])
+        for setting, by_seed in rollouts.items():
+            for seed, (_, r) in by_seed.items():
+                for i, trajectory in enumerate(r["ids"]):
+                    columns = [r["relative_error"][i], r["raw_error"][i], r["true_size"][i]]
+                    columns += [r[f"score_{name}"][i] for name in SIGNALS]
+                    for step in range(len(columns[0])):
+                        writer.writerow([setting, seed, int(trajectory), step] + [f"{c[step]:.6g}" for c in columns])
+
+    print(f"\n  Saved summary.json, leadtimes.csv ({len(rows)} rows) and rollout_steps.csv.gz to {results_dir}")
 
 
 if __name__ == "__main__":

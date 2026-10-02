@@ -2,7 +2,9 @@
 
 This is the single plan for the project. It combines the lab's original brief ([PROJECT_SPEC.md](PROJECT_SPEC.md)) with the fixes from our review. Where they disagree, this file wins.
 
-> **Frozen on 2026-09-24.** Before the headline run, every setting and the exact scoring rules were frozen in [FREEZE.md](FREEZE.md), at git tag `freeze-v1`, as the lab requested. **Where this plan and FREEZE.md differ, FREEZE.md wins.** Also since the freeze: the split this plan's Day 2–4 results call "test" was renamed **dev**, and a fresh **test** split that nobody has looked at was drawn for the headline run.
+> **Frozen.** Before the headline run, every setting and the exact scoring rules were frozen in [FREEZE.md](FREEZE.md), as the lab requested: first at git tag `freeze-v1` (2026-09-24), then extended at `freeze-v2` (2026-10-01) for the shift sprint described below. **Where this plan and FREEZE.md differ, FREEZE.md wins.** Also since the freeze: the split this plan's Day 2–4 results call "test" was renamed **dev**, and a fresh **test** split that nobody has looked at was drawn for the headline run.
+>
+> **The shift sprint (due 2026-10-06).** The lab widened the question. Besides the original physics (now called the *control*), the frozen run tests three *shifts* the model never trained on: twice the viscosity (smoother waves), 70% of the viscosity (sharper shocks), and rougher starting waves (shocks form twice as early). Alarm thresholds are still set on the original physics only, as they would be in real use, so the run also measures how often each alarm cries wolf when the physics changes. A sixth signal was added: `pde_residual`, an output-side check of how badly each predicted step breaks Burgers' equation. Deliverables: the repo and commit, one run command, raw CSVs, six figures, lead times, false-alarm rates, null results, and a 1–2 page decision memo.
 
 - **Project:** week-1 deliverable for The BU1LD Fall 2026 Research Labs, thread 05 (*Dynamical Representation Phase Transitions for PDE Surrogates*)
 - **Time:** about 7 days part-time, 12–18 hours total

@@ -2,7 +2,7 @@
 # Every number the code uses lives in this file. See PROJECT_PLAN.md for what each one is for.
 
 device: cuda                         # "cuda" = GPU, "cpu" = CPU. Uses the CPU if no GPU is found.
-data_dir: data                       # generated trajectories (about 270 MB, not committed to git)
+data_dir: data                       # generated trajectories (about 350 MB, not committed to git)
 results_dir: results                 # figures and numbers
 
 simulator:
@@ -27,7 +27,18 @@ data:
   n_train: 1000
   n_calibration: 200
   n_dev: 100             # for setup checks on Days 2-4. Called "test" before the freeze.
-  n_test: 100
+  n_test: 100            # the test split is the "control" setting: same physics as training
+
+# Shift settings: test-only physics or starting waves the model never trained on (FREEZE.md, v2).
+# Their true answers are simulated on the finer grid and read at the model's 256 points, because
+# sharper shocks (viscosity_down) are too thin for the 256-point simulator.
+shifts:
+  n_trajectories: 100
+  fine_points: 1024
+  settings:
+    viscosity_up:   {viscosity: 0.002,  amplitude: 0.5, n_modes: 5, decay: 1.0, seed: 1001}  # smoother physics
+    viscosity_down: {viscosity: 0.0007, amplitude: 0.5, n_modes: 5, decay: 1.0, seed: 1002}  # sharper shocks
+    rougher_waves:  {viscosity: 0.001,  amplitude: 0.5, n_modes: 5, decay: 0.5, seed: 1003}  # shocks form twice as early
 
 model:
   modes: 16              # how many of the broadest sine-wave modes each layer keeps
@@ -51,6 +62,8 @@ leadtime:                        # FROZEN before the test split was scored (FREE
   false_alarm_rate: 0.05         # every alarm is tuned so this share of calibration rollouts false-alarm
   safe_fraction: 0.5             # the safe window is the steps before this fraction of the failure step
   failure_threshold_sweep: [0.02, 0.05, 0.10, 0.20, 0.50, 1.00]   # secondary analysis only
+  tradeoff_rates: [0.01, 0.02, 0.05, 0.10, 0.20, 0.30, 0.50]       # descriptive: detection vs false alarms
+  min_settings_supported: 3      # overall verdict: the per-setting rule must hold in at least this many settings
 
 rollout:
   failure_threshold: 0.10        # relative error that counts as "this rollout has failed"

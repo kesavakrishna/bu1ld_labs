@@ -25,6 +25,14 @@ data:
   n_dev: 50              # CHANGED
   n_test: 50             # CHANGED
 
+shifts:
+  n_trajectories: 20     # CHANGED
+  fine_points: 1024
+  settings:              # CHANGED seeds, so these never overlap the full run's shift data
+    viscosity_up:   {viscosity: 0.002,  amplitude: 0.5, n_modes: 5, decay: 1.0, seed: 91}
+    viscosity_down: {viscosity: 0.0007, amplitude: 0.5, n_modes: 5, decay: 1.0, seed: 92}
+    rougher_waves:  {viscosity: 0.001,  amplitude: 0.5, n_modes: 5, decay: 0.5, seed: 93}
+
 model:
   modes: 16
   width: 64
@@ -47,6 +55,8 @@ leadtime:
   false_alarm_rate: 0.05
   safe_fraction: 0.5
   failure_threshold_sweep: [0.02, 0.05, 0.10, 0.20, 0.50, 1.00]
+  tradeoff_rates: [0.01, 0.02, 0.05, 0.10, 0.20, 0.30, 0.50]
+  min_settings_supported: 3
 
 rollout:
   failure_threshold: 0.10

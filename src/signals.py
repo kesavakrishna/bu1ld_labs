@@ -12,6 +12,7 @@ Internal signals (need to see inside the network):
 Output-side signals (need only the network's prediction):
     step_change     How much did this prediction change the wave?
     spectral_drift  What share of the prediction's energy sits in the finest wiggles?
+    pde_residual    How badly does this step break Burgers' equation?
 
 Turning a signal into a score
 -----------------------------
@@ -27,7 +28,7 @@ A score around 1 or below is ordinary. Bigger means more unusual for that step.
 import torch
 
 INTERNAL = ["act_norm", "eff_rank", "train_dist"]
-OUTPUT = ["step_change", "spectral_drift"]
+OUTPUT = ["step_change", "spectral_drift", "pde_residual"]
 SIGNALS = INTERNAL + OUTPUT
 
 
@@ -69,7 +70,34 @@ def fine_detail_share(wave):
     return energy_per_mode[..., first_fine_mode:].sum(dim=-1) / energy_per_mode.sum(dim=-1)
 
 
-def measure(activations, wave_in, wave_out):
+def physics_residual(wave_in, wave_out, dt, viscosity):
+    """
+    How badly one predicted step breaks Burgers' equation, du/dt + u·du/dx = viscosity·d²u/dx².
+
+    Plug the step into the equation: the rate of change (wave_out - wave_in) / dt, plus the
+    steepening and smoothing terms evaluated halfway through the step. For a true step the
+    pieces nearly cancel (about 0.1% left over, from the time step); for a wrong one they don't.
+    Returns the size of what's left over, as a fraction of the size of the rate of change.
+
+    Uses the same Fourier derivatives and 2/3 rule as the simulator, and the viscosity the
+    rollout is meant to be simulating, which a user always knows.
+    """
+    n_points = wave_in.shape[-1]
+    m = torch.arange(n_points // 2 + 1, device=wave_in.device, dtype=wave_in.dtype)
+    k = 2 * torch.pi * m
+    keep = (m < n_points / 3).to(wave_in.dtype)
+
+    rate = (wave_out - wave_in) / dt
+    half_way = (wave_in + wave_out) / 2
+    steepening = torch.fft.irfft(1j * k * torch.fft.rfft(half_way * half_way / 2) * keep, n=n_points)
+    smoothing = torch.fft.irfft(-(k**2) * torch.fft.rfft(half_way), n=n_points)
+    left_over = rate + steepening - viscosity * smoothing
+
+    norm = torch.linalg.vector_norm
+    return norm(left_over, dim=-1) / norm(rate, dim=-1)
+
+
+def measure(activations, wave_in, wave_out, dt, viscosity):
     """
     Raw signals from one model call, for a batch of trajectories.
 
@@ -77,6 +105,8 @@ def measure(activations, wave_in, wave_out):
         activations: the captured layer output, [batch, channels, n_points]
         wave_in:     the wave given to the model, [batch, n_points]
         wave_out:    the model's prediction, [batch, n_points]
+        dt:          time between the two waves
+        viscosity:   the physics being simulated (for pde_residual)
 
     Returns a dict of [batch] tensors, plus "summary" ([batch, 2 * channels]). train_dist
     is built from the summary later, once the normal summary for each step is known.
@@ -89,6 +119,7 @@ def measure(activations, wave_in, wave_out):
         "summary": torch.cat([activations.mean(dim=-1), activations.std(dim=-1)], dim=-1),
         "step_change": norm(wave_out - wave_in, dim=-1) / norm(wave_in, dim=-1),
         "spectral_drift": fine_detail_share(wave_out),
+        "pde_residual": physics_residual(wave_in, wave_out, dt, viscosity),
     }
 
 

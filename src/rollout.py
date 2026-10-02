@@ -7,8 +7,10 @@ For every saved model:
   1. Reference runs. Feed the model the TRUE wave at every step, on training
      trajectories, to learn what each signal normally looks like at each step.
   2. Rollouts. Start from the true wave at step 0 and feed the model its own
-     predictions from then on, for the calibration, dev and test splits. At every step,
-     record the errors and every signal, then score each signal against the reference.
+     predictions from then on, for the calibration, dev and test splits and every shift
+     setting. At every step, record the errors and every signal, then score each signal
+     against the reference. Shift settings are scored against the same reference: "normal"
+     always means the physics the model was trained on.
 
 Errors recorded at every step:
   * relative error - size of the mistake divided by size of the true wave
@@ -37,9 +39,13 @@ import yaml
 from model import FNO1d
 from signals import SIGNALS, add_train_dist, measure, reference_statistics, scores
 
-# Calibration sets thresholds, dev feeds the setup checks, test is scored once, in the frozen
-# run. Training trajectories are only used for the reference runs.
+# Calibration sets thresholds, dev feeds the setup checks, test and the shift settings are
+# scored once, in the frozen run. Training trajectories are only used for the reference runs.
 SPLITS = ["calibration", "dev", "test"]
+
+
+def splits_to_roll_out(config):
+    return SPLITS + [f"shift_{name}" for name in config["shifts"]["settings"]]
 
 
 class ActivationCatcher:
@@ -71,7 +77,7 @@ def load_model(path, device):
 
 
 @torch.no_grad()
-def run_model(model, catcher, u_true, feed_back):
+def run_model(model, catcher, u_true, feed_back, dt, viscosity):
     """
     Call the model once per step, measuring errors and signals along the way.
 
@@ -79,6 +85,7 @@ def run_model(model, catcher, u_true, feed_back):
         u_true:    the true waves, [n_trajectories, n_steps, n_points], on the model's device
         feed_back: True for a rollout (each prediction becomes the next input).
                    False for a reference run (the true wave is the input at every step).
+        dt, viscosity: time between steps and the physics being simulated (for pde_residual)
 
     Returns:
         relative_error, raw_error, true_size: [n_trajectories, n_steps] each
@@ -98,7 +105,8 @@ def run_model(model, catcher, u_true, feed_back):
     wave = u_true[:, 0]
     for step in range(1, n_steps):
         prediction = model(wave)  # the hook catches the activations during this call
-        measured.append({name: values.cpu() for name, values in measure(catcher.activations, wave, prediction).items()})
+        signals_now = measure(catcher.activations, wave, prediction, dt, viscosity)
+        measured.append({name: values.cpu() for name, values in signals_now.items()})
 
         mistake = torch.linalg.vector_norm(prediction - u_true[:, step], dim=-1).cpu()
         raw_error[:, step] = mistake
@@ -132,6 +140,7 @@ def main():
     n_reference = config["signals"]["n_reference"]
     reference_ids = train["ids"][:n_reference]
     reference_waves = torch.from_numpy(train["u"][:n_reference]).to(device)
+    reference_physics = {"dt": float(train["dt"]), "viscosity": float(train["viscosity"])}
 
     for seed in config["training"]["seeds"]:
         model = load_model(Path(config["results_dir"]) / "models" / f"model_seed{seed}.pt", device)
@@ -139,7 +148,7 @@ def main():
         catcher = ActivationCatcher(layer)
 
         # 1. What "normal" looks like at each step.
-        _, _, _, reference = run_model(model, catcher, reference_waves, feed_back=False)
+        _, _, _, reference = run_model(model, catcher, reference_waves, feed_back=False, **reference_physics)
         normal = reference_statistics(reference)
         np.savez(
             output_dir / f"reference_seed{seed}.npz",
@@ -150,12 +159,14 @@ def main():
         )
 
         # 2. Rollouts, scored against normal.
-        for split in SPLITS:
+        for split in splits_to_roll_out(config):
             data = np.load(data_dir / f"{split}.npz")
             assert not set(data["ids"]) & set(reference_ids), f"{split} overlaps the reference trajectories"
 
             u_true = torch.from_numpy(data["u"]).to(device)
-            relative_error, raw_error, true_size, signals = run_model(model, catcher, u_true, feed_back=True)
+            relative_error, raw_error, true_size, signals = run_model(
+                model, catcher, u_true, feed_back=True, dt=float(data["dt"]), viscosity=float(data["viscosity"])
+            )
             signals = add_train_dist(signals, normal["summary"])
             signal_scores = scores(signals, normal)
 
@@ -169,8 +180,7 @@ def main():
                 **{name: signals[name].numpy() for name in SIGNALS},
                 **{f"score_{name}": signal_scores[name].numpy() for name in SIGNALS},
             )
-            print(f"  seed {seed} {split:>11}: {len(u_true)} rollouts, "
-                  f"median error at the last step {100 * relative_error[:, -1].median():.1f}%")
+            print(f"  seed {seed} {split:>20}: {len(u_true)} rollouts")
 
         catcher.remove()
 

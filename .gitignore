@@ -1,9 +1,13 @@
 __pycache__/
 
-# The generated dataset (about 270 MB).
+# The generated dataset (about 350 MB).
 data/
 
-# Generated results. Only the final figure and its numbers are committed.
+# Generated results. Committed: the numbers, the raw CSVs, the result figures and the
+# Day 1-4 setup figures. Not committed: model checkpoints, rollout arrays, the small config.
 results/*
-!results/leadtime.png
 !results/summary.json
+!results/leadtimes.csv
+!results/rollout_steps.csv.gz
+!results/figures/
+!results/day*.png

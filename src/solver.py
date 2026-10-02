@@ -16,7 +16,8 @@ How the simulator works
 - All trajectories are simulated together in one batch, which is what makes it fast.
   A batch of waves has shape [n_trajectories, n_points].
 
-Generate the dataset with:
+Generates the train, calibration, dev and test splits, plus one dataset per shift setting:
+physics or starting waves the model never trained on (configs/full.yaml, `shifts`).
 
     python src/solver.py --config configs/full.yaml
 """
@@ -155,30 +156,53 @@ def main():
     start = time.time()
     u = simulate(u0.to(device), sim["viscosity"], sim["dt_solver"], sim["steps_per_save"], sim["n_saves"])
     print(f"  finished in {time.time() - start:.1f} s")
+    refuse_if_energy_rises(u, config)
 
-    # Refuse to save broken data.
+    data_dir = Path(config["data_dir"]).expanduser()
+    data_dir.mkdir(parents=True, exist_ok=True)
+
+    def save(name, waves, first_id, seed, viscosity):
+        path = data_dir / f"{name}.npz"
+        np.savez(
+            path,
+            u=waves.numpy(),                        # [n_trajectories, n_saves + 1, n_points]
+            ids=np.arange(first_id, first_id + len(waves)),
+            seed=seed,
+            viscosity=viscosity,                    # the physics this split was simulated with
+            dt=sim["dt_solver"] * sim["steps_per_save"],  # time between saved snapshots
+            config=yaml.safe_dump(config),          # every setting used, for traceability
+        )
+        print(f"  saved {len(waves):>4} trajectories to {path}")
+
+    first = 0
+    for split, size in split_sizes.items():
+        seed = data["test_seed"] if split == "test" else data["seed"]
+        save(split, u[first : first + size], first, seed, sim["viscosity"])
+        first += size
+
+    # Shift settings: physics or starting waves the model never trained on. Some make shocks
+    # too thin for the normal grid, so they are simulated on the finer grid (with a smaller
+    # time step, to stay stable) and read off at the model's grid points.
+    shifts = config["shifts"]
+    factor = shifts["fine_points"] // sim["n_points"]
+    for name, s in shifts["settings"].items():
+        u0_fine = random_initial_conditions(
+            shifts["n_trajectories"], shifts["fine_points"], s["n_modes"], s["decay"], s["amplitude"], s["seed"]
+        )
+        u_fine = simulate(u0_fine.to(device), s["viscosity"], sim["dt_solver"] / factor,
+                          sim["steps_per_save"] * factor, sim["n_saves"])
+        refuse_if_energy_rises(u_fine, config)
+        save(f"shift_{name}", u_fine[:, :, ::factor], first, s["seed"], s["viscosity"])
+        first += shifts["n_trajectories"]
+
+
+def refuse_if_energy_rises(u, config):
+    """Stop rather than save broken data: energy can only fall for this equation."""
     rise = largest_energy_rise(u)
     if rise > config["solver_checks"]["max_energy_rise"]:
         raise RuntimeError(
             f"Energy went up by {rise:.2e} somewhere, so the simulator is unstable. Try a smaller dt_solver."
         )
-
-    data_dir = Path(config["data_dir"]).expanduser()
-    data_dir.mkdir(parents=True, exist_ok=True)
-
-    first = 0
-    for split, size in split_sizes.items():
-        path = data_dir / f"{split}.npz"
-        np.savez(
-            path,
-            u=u[first : first + size].numpy(),      # [n_trajectories, n_saves + 1, n_points]
-            ids=np.arange(first, first + size),
-            seed=data["test_seed"] if split == "test" else data["seed"],
-            dt=sim["dt_solver"] * sim["steps_per_save"],  # time between saved snapshots
-            config=yaml.safe_dump(config),          # every setting used, for traceability
-        )
-        print(f"  saved {size:>4} trajectories to {path}")
-        first += size
 
 
 if __name__ == "__main__":
