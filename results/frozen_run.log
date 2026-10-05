@@ -1,0 +1,228 @@
+Frozen run of freeze-v2
+commit: de54e3ccda6c4840abced6bd1873e385a75f0a2d
+started: 2026-10-04T17:06:06-06:00
+
+
+Day 1 simulator checks (20 trajectories, cuda)
+  Simulation time: 256 points 4.9 s, 1024 points 14.4 s
+
+  [PASS] Energy never goes up        largest rise -5.3e-04 (allowed 1e-05)
+  [PASS] 256 and 1024 grids agree    worst difference 0.62% at step 75 (allowed 1%)
+
+  Change per step      first 10 steps: median 1.3%   all steps: median 1.1%   last step: median 0.5%
+  Energy left at end   median 33.5% (range 15.0% to 59.3%)
+  Steepness            peaks at step 66 (median), 10x steeper than at the start
+
+  Figure saved to results\day1_solver_checks.png
+Simulating 1400 trajectories on cuda ...
+  finished in 4.2 s
+  saved 1000 trajectories to data\train.npz
+  saved  200 trajectories to data\calibration.npz
+  saved  100 trajectories to data\dev.npz
+  saved  100 trajectories to data\test.npz
+  saved  100 trajectories to data\shift_viscosity_up.npz
+  saved  100 trajectories to data\shift_viscosity_down.npz
+  saved  100 trajectories to data\shift_rougher_waves.npz
+Device: cuda
+20000 training pairs, 20000 dev pairs
+
+  seed 0
+    epoch  10   training error 1.603%
+    epoch  20   training error 1.189%
+    epoch  30   training error 1.029%
+    epoch  40   training error 1.503%
+    epoch  50   training error 1.121%
+    epoch  60   training error 0.867%
+    epoch  70   training error 0.325%
+    epoch  80   training error 0.267%
+    epoch  90   training error 0.247%
+    epoch 100   training error 0.242%
+    trained in 146 s (549,569 learned numbers)
+    saved to results\models\model_seed0.pt
+
+  seed 1
+    epoch  10   training error 2.933%
+    epoch  20   training error 2.146%
+    epoch  30   training error 1.773%
+    epoch  40   training error 1.517%
+    epoch  50   training error 0.734%
+    epoch  60   training error 0.654%
+    epoch  70   training error 0.349%
+    epoch  80   training error 0.281%
+    epoch  90   training error 0.259%
+    epoch 100   training error 0.254%
+    trained in 140 s (549,569 learned numbers)
+    saved to results\models\model_seed1.pt
+
+  seed 2
+    epoch  10   training error 2.615%
+    epoch  20   training error 1.550%
+    epoch  30   training error 1.284%
+    epoch  40   training error 1.330%
+    epoch  50   training error 1.146%
+    epoch  60   training error 0.464%
+    epoch  70   training error 0.326%
+    epoch  80   training error 0.261%
+    epoch  90   training error 0.242%
+    epoch 100   training error 0.238%
+    trained in 137 s (549,569 learned numbers)
+    saved to results\models\model_seed2.pt
+
+Day 2 check: single-step dev error must be under 1%
+  [PASS] seed 0   dev error 0.282%
+  [PASS] seed 1   dev error 0.299%
+  [PASS] seed 2   dev error 0.270%
+
+  Figure saved to results\day2_training.png
+  seed 0          calibration: 200 rollouts
+  seed 0                  dev: 100 rollouts
+  seed 0                 test: 100 rollouts
+  seed 0   shift_viscosity_up: 100 rollouts
+  seed 0 shift_viscosity_down: 100 rollouts
+  seed 0  shift_rougher_waves: 100 rollouts
+  seed 1          calibration: 200 rollouts
+  seed 1                  dev: 100 rollouts
+  seed 1                 test: 100 rollouts
+  seed 1   shift_viscosity_up: 100 rollouts
+  seed 1 shift_viscosity_down: 100 rollouts
+  seed 1  shift_rougher_waves: 100 rollouts
+  seed 2          calibration: 200 rollouts
+  seed 2                  dev: 100 rollouts
+  seed 2                 test: 100 rollouts
+  seed 2   shift_viscosity_up: 100 rollouts
+  seed 2 shift_viscosity_down: 100 rollouts
+  seed 2  shift_rougher_waves: 100 rollouts
+
+Day 3 setup gate (dev rollouts, failure = relative error above 10%)
+
+  seed  rollouts that fail  median failure step  wave size at failure  mistake growth   gate
+     0                95%                   46                   97%            1.6x   PASS
+     1                91%                   38                   98%            1.5x   PASS
+     2                85%                   47                   96%            1.7x   PASS
+
+  To pass, a seed needs at least 70% of rollouts failing
+  and a median failure step of 30 or later.
+  The last two columns are measured from step 20, once shocks have formed:
+  the true wave's size at failure, and how much the raw mistake grew.
+
+  Gate: PASS
+  Figure saved to results\day3_rollouts.png
+
+Day 4: median score around failure (271 failing dev rollouts, all seeds)
+A score of 1 is one normal spread; for pure noise the median would be about 0.67.
+
+           signal         type  -40 steps  -20 steps  -10 steps   -5 steps at failure
+         act_norm     internal       0.80       0.80       0.77       0.77       0.79
+         eff_rank     internal       0.45       0.51       0.62       0.64       0.63
+       train_dist     internal       0.64       0.68       0.69       0.68       0.68
+      step_change  output-side       0.42       0.51       0.67       0.71       0.79
+   spectral_drift  output-side       0.42       0.42       0.51       0.55       0.61
+     pde_residual  output-side       0.62       0.78       1.11       1.29       1.21
+         rollouts                     136        211        266        271        271
+  (early failures have no data 40 steps before, so fewer rollouts count there)
+
+  Figure saved to results\day4_signals.png
+
+Primary result: failure = relative error above 10%, every alarm tuned to 5% false alarms on calibration (original physics)
+
+  control: 256 of 300 rollouts fail
+            alarm      type  median lead          IQR  detected  false alarms   median by seed
+         act_norm  internal         -112  [-160, -38]       10%            6%   -115 / -118 / -109
+         eff_rank  internal         -103  [-156, -37]        5%            5%   -96 / -116 / -96
+       train_dist  internal          -98  [-155, -43]        3%            2%   -94 / -108 / -96
+      step_change    output         -100  [-157, -27]        6%            3%   -96 / -116 / -94
+   spectral_drift    output          -36  [-128, -11]       12%            4%   -37 / -34 / -41
+     pde_residual    output          -82  [-146, -10]       14%            7%   -74 / -70 / -88
+            clock  baseline          -48   [-74, -16]       17%            0%   -56 / -56 / -41
+  head-to-head, internal minus output-side lead time (median by seed):
+            act_norm vs step_change        0 / 0 / 0   wins  12%  losses  25%
+         act_norm vs spectral_drift        0 / 0 / 0   wins  13%  losses  42%
+           act_norm vs pde_residual        0 / 0 / 0   wins  15%  losses  27%
+            eff_rank vs step_change        0 / 0 / 0   wins   8%  losses  31%
+         eff_rank vs spectral_drift       0 / -5 / 0   wins   9%  losses  47%
+           eff_rank vs pde_residual        0 / 0 / 0   wins  12%  losses  31%
+          train_dist vs step_change        0 / 0 / 0   wins   7%  losses  35%
+       train_dist vs spectral_drift    -10 / -11 / 0   wins   5%  losses  53%
+         train_dist vs pde_residual        0 / 0 / 0   wins   7%  losses  40%
+  -> NOT SUPPORTED in this setting
+
+  viscosity_up: 295 of 300 rollouts fail
+            alarm      type  median lead          IQR  detected  false alarms   median by seed
+         act_norm  internal         -156  [-174, -97]        3%            2%   -159 / -159 / -150
+         eff_rank  internal         -153  [-174, -86]        3%            2%   -155 / -155 / -145
+       train_dist  internal         -149  [-172, -76]        5%            4%   -154 / -147 / -143
+      step_change    output         -149  [-173, -67]        5%            4%   -155 / -149 / -144
+   spectral_drift    output          -62  [-163, -22]        6%            4%   -78 / -58 / -60
+     pde_residual    output           18      [7, 30]       83%           76%   18 / 20 / 18
+            clock  baseline          -70   [-79, -52]        4%            0%   -71 / -72 / -68
+  head-to-head, internal minus output-side lead time (median by seed):
+            act_norm vs step_change        0 / 0 / 0   wins   5%  losses  30%
+         act_norm vs spectral_drift    0 / -10 / -10   wins   4%  losses  55%
+           act_norm vs pde_residual   -194 / -190 / -180   wins   2%  losses  96%
+            eff_rank vs step_change        0 / 0 / 0   wins   8%  losses  28%
+         eff_rank vs spectral_drift      0 / -6 / -4   wins   7%  losses  55%
+           eff_rank vs pde_residual   -194 / -188 / -170   wins   1%  losses  97%
+          train_dist vs step_change        0 / 0 / 0   wins   9%  losses  33%
+       train_dist vs spectral_drift   -6 / -17 / -15   wins   6%  losses  58%
+         train_dist vs pde_residual   -192 / -167 / -160   wins   4%  losses  95%
+  -> NOT SUPPORTED in this setting
+
+  viscosity_down: 273 of 300 rollouts fail
+            alarm      type  median lead          IQR  detected  false alarms   median by seed
+         act_norm  internal         -129  [-167, -58]        8%            5%   -132 / -122 / -132
+         eff_rank  internal         -121  [-165, -46]        9%           11%   -120 / -121 / -130
+       train_dist  internal         -120  [-164, -48]        8%            6%   -116 / -120 / -130
+      step_change    output         -122  [-164, -38]        7%            6%   -123 / -118 / -131
+   spectral_drift    output          -58  [-155, -14]        9%            4%   -56 / -56 / -61
+     pde_residual    output          -86  [-161, -19]        5%            2%   -106 / -78 / -96
+            clock  baseline          -60   [-75, -29]       12%            0%   -60 / -64 / -56
+  head-to-head, internal minus output-side lead time (median by seed):
+            act_norm vs step_change        0 / 0 / 0   wins  12%  losses  24%
+         act_norm vs spectral_drift        0 / 0 / 0   wins  13%  losses  41%
+           act_norm vs pde_residual        0 / 0 / 0   wins  15%  losses  35%
+            eff_rank vs step_change        0 / 0 / 0   wins  11%  losses  26%
+         eff_rank vs spectral_drift        0 / 0 / 0   wins  12%  losses  42%
+           eff_rank vs pde_residual        0 / 0 / 0   wins  17%  losses  36%
+          train_dist vs step_change        0 / 0 / 0   wins   5%  losses  30%
+       train_dist vs spectral_drift        0 / 0 / 0   wins   8%  losses  46%
+         train_dist vs pde_residual        0 / 0 / 0   wins   8%  losses  43%
+  -> NOT SUPPORTED in this setting
+
+  rougher_waves: 279 of 300 rollouts fail
+            alarm      type  median lead          IQR  detected  false alarms   median by seed
+         act_norm  internal         -155  [-176, -89]        4%            2%   -159 / -150 / -158
+         eff_rank  internal         -150  [-174, -72]        3%            4%   -158 / -145 / -139
+       train_dist  internal         -126  [-167, -44]        9%            7%   -136 / -113 / -125
+      step_change    output         -144  [-172, -49]        9%            7%   -156 / -125 / -144
+   spectral_drift    output         -102  [-167, -19]        9%            4%   -116 / -78 / -112
+     pde_residual    output         -136  [-170, -29]       11%            4%   -147 / -115 / -138
+            clock  baseline          -70   [-82, -52]        5%            0%   -72 / -72 / -67
+  head-to-head, internal minus output-side lead time (median by seed):
+            act_norm vs step_change        0 / 0 / 0   wins   6%  losses  32%
+         act_norm vs spectral_drift        0 / 0 / 0   wins   7%  losses  43%
+           act_norm vs pde_residual        0 / 0 / 0   wins   7%  losses  34%
+            eff_rank vs step_change        0 / 0 / 0   wins   9%  losses  27%
+         eff_rank vs spectral_drift        0 / 0 / 0   wins  10%  losses  41%
+           eff_rank vs pde_residual        0 / 0 / 0   wins  13%  losses  30%
+          train_dist vs step_change        0 / 0 / 0   wins  15%  losses  32%
+       train_dist vs spectral_drift        0 / 0 / 0   wins  15%  losses  42%
+         train_dist vs pde_residual        0 / 0 / 0   wins  15%  losses  36%
+  -> NOT SUPPORTED in this setting
+
+  Verdict rule: In each setting: supported if at least one internal alarm has a median lead-time difference above zero against EVERY output-side alarm, in EVERY seed. Overall: supported in at least 3 of 4 settings.
+  Supported in: no setting
+  -> OVERALL: NOT SUPPORTED
+
+Secondary: other failure thresholds (settings where the internal signals are supported)
+  failure at    2%: supported in no setting -> overall not supported
+  failure at    5%: supported in no setting -> overall not supported
+  failure at   10%: supported in no setting -> overall not supported
+  failure at   20%: supported in no setting -> overall not supported
+  failure at   50%: supported in no setting -> overall not supported
+  failure at  100%: supported in no setting -> overall not supported
+
+  Saved summary.json, leadtimes.csv (8400 rows) and rollout_steps.csv.gz to results
+  Six figures saved to results\figures
+
+finished: 2026-10-04T17:16:46-06:00
+exit status: 0

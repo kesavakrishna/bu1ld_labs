@@ -11,3 +11,4 @@ results/*
 !results/rollout_steps.csv.gz
 !results/figures/
 !results/day*.png
+!results/frozen_run.log

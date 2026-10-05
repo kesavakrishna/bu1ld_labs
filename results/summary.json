@@ -1,0 +1,3595 @@
+{
+  "failure_threshold": 0.1,
+  "settings": {
+    "control": {
+      "seeds": {
+        "0": {
+          "rollouts": 100,
+          "failing": 89,
+          "median_failure_step": 44.0,
+          "thresholds": {
+            "act_norm": 2.1422318220138545,
+            "eff_rank": 2.304255890846252,
+            "train_dist": 1.9136687457561492,
+            "step_change": 2.372403991222381,
+            "spectral_drift": 4.474226045608514,
+            "pde_residual": 4.7042140245437585,
+            "clock": 100.0
+          }
+        },
+        "1": {
+          "rollouts": 100,
+          "failing": 82,
+          "median_failure_step": 44.5,
+          "thresholds": {
+            "act_norm": 2.0621693968772883,
+            "eff_rank": 2.343623554706573,
+            "train_dist": 2.006662619113921,
+            "step_change": 2.4184315323829644,
+            "spectral_drift": 3.2567977070808403,
+            "pde_residual": 3.814532959461211,
+            "clock": 100.0
+          }
+        },
+        "2": {
+          "rollouts": 100,
+          "failing": 85,
+          "median_failure_step": 59.0,
+          "thresholds": {
+            "act_norm": 2.067449438571929,
+            "eff_rank": 2.226694190502166,
+            "train_dist": 1.831933271884918,
+            "step_change": 2.3528894424438462,
+            "spectral_drift": 3.648358821868885,
+            "pde_residual": 4.181189894676208,
+            "clock": 100.0
+          }
+        }
+      },
+      "alarms": {
+        "act_norm": {
+          "lead_time": {
+            "median": -112.5,
+            "q25": -160.25,
+            "q75": -37.75
+          },
+          "lead_time_median_by_seed": {
+            "0": -115.0,
+            "1": -118.5,
+            "2": -109.0
+          },
+          "detection_rate": 0.09765625,
+          "detection_rate_by_seed": {
+            "0": 0.11235955056179775,
+            "1": 0.07317073170731707,
+            "2": 0.10588235294117647
+          },
+          "false_alarm_rate": 0.06,
+          "false_alarm_rate_by_seed": {
+            "0": 0.06,
+            "1": 0.05,
+            "2": 0.07
+          }
+        },
+        "eff_rank": {
+          "lead_time": {
+            "median": -103.0,
+            "q25": -156.0,
+            "q75": -37.0
+          },
+          "lead_time_median_by_seed": {
+            "0": -96.0,
+            "1": -116.5,
+            "2": -96.0
+          },
+          "detection_rate": 0.0546875,
+          "detection_rate_by_seed": {
+            "0": 0.056179775280898875,
+            "1": 0.036585365853658534,
+            "2": 0.07058823529411765
+          },
+          "false_alarm_rate": 0.05333333333333334,
+          "false_alarm_rate_by_seed": {
+            "0": 0.05,
+            "1": 0.04,
+            "2": 0.07
+          }
+        },
+        "train_dist": {
+          "lead_time": {
+            "median": -97.5,
+            "q25": -155.0,
+            "q75": -43.0
+          },
+          "lead_time_median_by_seed": {
+            "0": -94.0,
+            "1": -107.5,
+            "2": -96.0
+          },
+          "detection_rate": 0.02734375,
+          "detection_rate_by_seed": {
+            "0": 0.02247191011235955,
+            "1": 0.024390243902439025,
+            "2": 0.03529411764705882
+          },
+          "false_alarm_rate": 0.023333333333333334,
+          "false_alarm_rate_by_seed": {
+            "0": 0.02,
+            "1": 0.02,
+            "2": 0.03
+          }
+        },
+        "step_change": {
+          "lead_time": {
+            "median": -99.5,
+            "q25": -157.25,
+            "q75": -26.75
+          },
+          "lead_time_median_by_seed": {
+            "0": -96.0,
+            "1": -116.5,
+            "2": -94.0
+          },
+          "detection_rate": 0.05859375,
+          "detection_rate_by_seed": {
+            "0": 0.0449438202247191,
+            "1": 0.07317073170731707,
+            "2": 0.058823529411764705
+          },
+          "false_alarm_rate": 0.02666666666666667,
+          "false_alarm_rate_by_seed": {
+            "0": 0.01,
+            "1": 0.03,
+            "2": 0.04
+          }
+        },
+        "spectral_drift": {
+          "lead_time": {
+            "median": -35.5,
+            "q25": -128.25,
+            "q75": -11.0
+          },
+          "lead_time_median_by_seed": {
+            "0": -37.0,
+            "1": -33.5,
+            "2": -41.0
+          },
+          "detection_rate": 0.1171875,
+          "detection_rate_by_seed": {
+            "0": 0.07865168539325842,
+            "1": 0.13414634146341464,
+            "2": 0.1411764705882353
+          },
+          "false_alarm_rate": 0.04,
+          "false_alarm_rate_by_seed": {
+            "0": 0.03,
+            "1": 0.06,
+            "2": 0.03
+          }
+        },
+        "pde_residual": {
+          "lead_time": {
+            "median": -82.5,
+            "q25": -146.25,
+            "q75": -10.0
+          },
+          "lead_time_median_by_seed": {
+            "0": -74.0,
+            "1": -69.5,
+            "2": -88.0
+          },
+          "detection_rate": 0.13671875,
+          "detection_rate_by_seed": {
+            "0": 0.11235955056179775,
+            "1": 0.1951219512195122,
+            "2": 0.10588235294117647
+          },
+          "false_alarm_rate": 0.06666666666666667,
+          "false_alarm_rate_by_seed": {
+            "0": 0.05,
+            "1": 0.11,
+            "2": 0.04
+          }
+        },
+        "clock": {
+          "lead_time": {
+            "median": -47.5,
+            "q25": -74.0,
+            "q75": -16.0
+          },
+          "lead_time_median_by_seed": {
+            "0": -56.0,
+            "1": -55.5,
+            "2": -41.0
+          },
+          "detection_rate": 0.171875,
+          "detection_rate_by_seed": {
+            "0": 0.16853932584269662,
+            "1": 0.0975609756097561,
+            "2": 0.24705882352941178
+          },
+          "false_alarm_rate": 0.0,
+          "false_alarm_rate_by_seed": {
+            "0": 0.0,
+            "1": 0.0,
+            "2": 0.0
+          }
+        }
+      },
+      "head_to_head": {
+        "act_norm vs step_change": {
+          "difference": {
+            "median": 0.0,
+            "q25": -1.0,
+            "q75": 0.0
+          },
+          "difference_median_by_seed": {
+            "0": 0.0,
+            "1": 0.0,
+            "2": 0.0
+          },
+          "wins": 0.1171875,
+          "ties": 0.62890625,
+          "losses": 0.25390625
+        },
+        "act_norm vs spectral_drift": {
+          "difference": {
+            "median": 0.0,
+            "q25": -54.75,
+            "q75": 0.0
+          },
+          "difference_median_by_seed": {
+            "0": 0.0,
+            "1": 0.0,
+            "2": 0.0
+          },
+          "wins": 0.12890625,
+          "ties": 0.453125,
+          "losses": 0.41796875
+        },
+        "act_norm vs pde_residual": {
+          "difference": {
+            "median": 0.0,
+            "q25": -4.0,
+            "q75": 0.0
+          },
+          "difference_median_by_seed": {
+            "0": 0.0,
+            "1": 0.0,
+            "2": 0.0
+          },
+          "wins": 0.15234375,
+          "ties": 0.58203125,
+          "losses": 0.265625
+        },
+        "eff_rank vs step_change": {
+          "difference": {
+            "median": 0.0,
+            "q25": -4.0,
+            "q75": 0.0
+          },
+          "difference_median_by_seed": {
+            "0": 0.0,
+            "1": 0.0,
+            "2": 0.0
+          },
+          "wins": 0.08203125,
+          "ties": 0.609375,
+          "losses": 0.30859375
+        },
+        "eff_rank vs spectral_drift": {
+          "difference": {
+            "median": 0.0,
+            "q25": -34.25,
+            "q75": 0.0
+          },
+          "difference_median_by_seed": {
+            "0": 0.0,
+            "1": -5.0,
+            "2": 0.0
+          },
+          "wins": 0.09375,
+          "ties": 0.43359375,
+          "losses": 0.47265625
+        },
+        "eff_rank vs pde_residual": {
+          "difference": {
+            "median": 0.0,
+            "q25": -6.25,
+            "q75": 0.0
+          },
+          "difference_median_by_seed": {
+            "0": 0.0,
+            "1": 0.0,
+            "2": 0.0
+          },
+          "wins": 0.125,
+          "ties": 0.56640625,
+          "losses": 0.30859375
+        },
+        "train_dist vs step_change": {
+          "difference": {
+            "median": 0.0,
+            "q25": -12.0,
+            "q75": 0.0
+          },
+          "difference_median_by_seed": {
+            "0": 0.0,
+            "1": 0.0,
+            "2": 0.0
+          },
+          "wins": 0.06640625,
+          "ties": 0.5859375,
+          "losses": 0.34765625
+        },
+        "train_dist vs spectral_drift": {
+          "difference": {
+            "median": -9.0,
+            "q25": -47.5,
+            "q75": 0.0
+          },
+          "difference_median_by_seed": {
+            "0": -10.0,
+            "1": -11.0,
+            "2": 0.0
+          },
+          "wins": 0.0546875,
+          "ties": 0.41796875,
+          "losses": 0.52734375
+        },
+        "train_dist vs pde_residual": {
+          "difference": {
+            "median": 0.0,
+            "q25": -16.0,
+            "q75": 0.0
+          },
+          "difference_median_by_seed": {
+            "0": 0.0,
+            "1": 0.0,
+            "2": 0.0
+          },
+          "wins": 0.06640625,
+          "ties": 0.53515625,
+          "losses": 0.3984375
+        },
+        "act_norm vs clock": {
+          "difference": {
+            "median": -100.0,
+            "q25": -100.0,
+            "q75": 1.5
+          },
+          "difference_median_by_seed": {
+            "0": -100.0,
+            "1": -100.0,
+            "2": -100.0
+          },
+          "wins": 0.25390625,
+          "ties": 0.0,
+          "losses": 0.74609375
+        },
+        "eff_rank vs clock": {
+          "difference": {
+            "median": -100.0,
+            "q25": -100.0,
+            "q75": 3.25
+          },
+          "difference_median_by_seed": {
+            "0": -100.0,
+            "1": -100.0,
+            "2": -100.0
+          },
+          "wins": 0.2734375,
+          "ties": 0.0,
+          "losses": 0.7265625
+        },
+        "train_dist vs clock": {
+          "difference": {
+            "median": -100.0,
+            "q25": -100.0,
+            "q75": -4.75
+          },
+          "difference_median_by_seed": {
+            "0": -100.0,
+            "1": -100.0,
+            "2": -100.0
+          },
+          "wins": 0.2265625,
+          "ties": 0.01171875,
+          "losses": 0.76171875
+        },
+        "step_change vs clock": {
+          "difference": {
+            "median": -100.0,
+            "q25": -100.0,
+            "q75": 13.25
+          },
+          "difference_median_by_seed": {
+            "0": -100.0,
+            "1": -100.0,
+            "2": -100.0
+          },
+          "wins": 0.296875,
+          "ties": 0.0,
+          "losses": 0.703125
+        },
+        "spectral_drift vs clock": {
+          "difference": {
+            "median": -12.5,
+            "q25": -100.0,
+            "q75": 39.0
+          },
+          "difference_median_by_seed": {
+            "0": -11.0,
+            "1": -2.5,
+            "2": -48.0
+          },
+          "wins": 0.45703125,
+          "ties": 0.0,
+          "losses": 0.54296875
+        },
+        "pde_residual vs clock": {
+          "difference": {
+            "median": -100.0,
+            "q25": -100.0,
+            "q75": 25.25
+          },
+          "difference_median_by_seed": {
+            "0": -100.0,
+            "1": -100.0,
+            "2": -100.0
+          },
+          "wins": 0.34375,
+          "ties": 0.0,
+          "losses": 0.65625
+        }
+      },
+      "supported": false
+    },
+    "viscosity_up": {
+      "seeds": {
+        "0": {
+          "rollouts": 100,
+          "failing": 98,
+          "median_failure_step": 29.0,
+          "thresholds": {
+            "act_norm": 2.1422318220138545,
+            "eff_rank": 2.304255890846252,
+            "train_dist": 1.9136687457561492,
+            "step_change": 2.372403991222381,
+            "spectral_drift": 4.474226045608514,
+            "pde_residual": 4.7042140245437585,
+            "clock": 100.0
+          }
+        },
+        "1": {
+          "rollouts": 100,
+          "failing": 99,
+          "median_failure_step": 28.0,
+          "thresholds": {
+            "act_norm": 2.0621693968772883,
+            "eff_rank": 2.343623554706573,
+            "train_dist": 2.006662619113921,
+            "step_change": 2.4184315323829644,
+            "spectral_drift": 3.2567977070808403,
+            "pde_residual": 3.814532959461211,
+            "clock": 100.0
+          }
+        },
+        "2": {
+          "rollouts": 100,
+          "failing": 98,
+          "median_failure_step": 32.5,
+          "thresholds": {
+            "act_norm": 2.067449438571929,
+            "eff_rank": 2.226694190502166,
+            "train_dist": 1.831933271884918,
+            "step_change": 2.3528894424438462,
+            "spectral_drift": 3.648358821868885,
+            "pde_residual": 4.181189894676208,
+            "clock": 100.0
+          }
+        }
+      },
+      "alarms": {
+        "act_norm": {
+          "lead_time": {
+            "median": -156.0,
+            "q25": -174.5,
+            "q75": -97.0
+          },
+          "lead_time_median_by_seed": {
+            "0": -159.0,
+            "1": -159.0,
+            "2": -149.5
+          },
+          "detection_rate": 0.02711864406779661,
+          "detection_rate_by_seed": {
+            "0": 0.030612244897959183,
+            "1": 0.020202020202020204,
+            "2": 0.030612244897959183
+          },
+          "false_alarm_rate": 0.023333333333333334,
+          "false_alarm_rate_by_seed": {
+            "0": 0.03,
+            "1": 0.02,
+            "2": 0.02
+          }
+        },
+        "eff_rank": {
+          "lead_time": {
+            "median": -153.0,
+            "q25": -173.5,
+            "q75": -86.5
+          },
+          "lead_time_median_by_seed": {
+            "0": -155.0,
+            "1": -155.0,
+            "2": -145.0
+          },
+          "detection_rate": 0.030508474576271188,
+          "detection_rate_by_seed": {
+            "0": 0.030612244897959183,
+            "1": 0.010101010101010102,
+            "2": 0.05102040816326531
+          },
+          "false_alarm_rate": 0.023333333333333334,
+          "false_alarm_rate_by_seed": {
+            "0": 0.02,
+            "1": 0.01,
+            "2": 0.04
+          }
+        },
+        "train_dist": {
+          "lead_time": {
+            "median": -149.0,
+            "q25": -171.5,
+            "q75": -76.5
+          },
+          "lead_time_median_by_seed": {
+            "0": -154.5,
+            "1": -147.0,
+            "2": -143.0
+          },
+          "detection_rate": 0.05423728813559322,
+          "detection_rate_by_seed": {
+            "0": 0.05102040816326531,
+            "1": 0.06060606060606061,
+            "2": 0.05102040816326531
+          },
+          "false_alarm_rate": 0.043333333333333335,
+          "false_alarm_rate_by_seed": {
+            "0": 0.04,
+            "1": 0.04,
+            "2": 0.05
+          }
+        },
+        "step_change": {
+          "lead_time": {
+            "median": -149.0,
+            "q25": -173.0,
+            "q75": -67.0
+          },
+          "lead_time_median_by_seed": {
+            "0": -155.0,
+            "1": -149.0,
+            "2": -144.5
+          },
+          "detection_rate": 0.04745762711864407,
+          "detection_rate_by_seed": {
+            "0": 0.04081632653061224,
+            "1": 0.04040404040404041,
+            "2": 0.061224489795918366
+          },
+          "false_alarm_rate": 0.043333333333333335,
+          "false_alarm_rate_by_seed": {
+            "0": 0.04,
+            "1": 0.04,
+            "2": 0.05
+          }
+        },
+        "spectral_drift": {
+          "lead_time": {
+            "median": -62.0,
+            "q25": -163.0,
+            "q75": -22.0
+          },
+          "lead_time_median_by_seed": {
+            "0": -78.5,
+            "1": -58.0,
+            "2": -60.0
+          },
+          "detection_rate": 0.06440677966101695,
+          "detection_rate_by_seed": {
+            "0": 0.04081632653061224,
+            "1": 0.0707070707070707,
+            "2": 0.08163265306122448
+          },
+          "false_alarm_rate": 0.03666666666666667,
+          "false_alarm_rate_by_seed": {
+            "0": 0.03,
+            "1": 0.05,
+            "2": 0.03
+          }
+        },
+        "pde_residual": {
+          "lead_time": {
+            "median": 18.0,
+            "q25": 7.0,
+            "q75": 30.5
+          },
+          "lead_time_median_by_seed": {
+            "0": 17.5,
+            "1": 20.0,
+            "2": 17.5
+          },
+          "detection_rate": 0.8271186440677966,
+          "detection_rate_by_seed": {
+            "0": 0.8163265306122449,
+            "1": 0.8585858585858586,
+            "2": 0.8061224489795918
+          },
+          "false_alarm_rate": 0.7566666666666667,
+          "false_alarm_rate_by_seed": {
+            "0": 0.77,
+            "1": 0.82,
+            "2": 0.68
+          }
+        },
+        "clock": {
+          "lead_time": {
+            "median": -70.0,
+            "q25": -79.0,
+            "q75": -52.0
+          },
+          "lead_time_median_by_seed": {
+            "0": -71.0,
+            "1": -72.0,
+            "2": -67.5
+          },
+          "detection_rate": 0.04067796610169491,
+          "detection_rate_by_seed": {
+            "0": 0.02040816326530612,
+            "1": 0.04040404040404041,
+            "2": 0.061224489795918366
+          },
+          "false_alarm_rate": 0.0,
+          "false_alarm_rate_by_seed": {
+            "0": 0.0,
+            "1": 0.0,
+            "2": 0.0
+          }
+        }
+      },
+      "head_to_head": {
+        "act_norm vs step_change": {
+          "difference": {
+            "median": 0.0,
+            "q25": -9.0,
+            "q75": 0.0
+          },
+          "difference_median_by_seed": {
+            "0": 0.0,
+            "1": 0.0,
+            "2": 0.0
+          },
+          "wins": 0.04745762711864407,
+          "ties": 0.6542372881355932,
+          "losses": 0.2983050847457627
+        },
+        "act_norm vs spectral_drift": {
+          "difference": {
+            "median": -7.0,
+            "q25": -115.5,
+            "q75": 0.0
+          },
+          "difference_median_by_seed": {
+            "0": 0.0,
+            "1": -10.0,
+            "2": -10.0
+          },
+          "wins": 0.04406779661016949,
+          "ties": 0.4067796610169492,
+          "losses": 0.5491525423728814
+        },
+        "act_norm vs pde_residual": {
+          "difference": {
+            "median": -189.0,
+            "q25": -198.0,
+            "q75": -96.0
+          },
+          "difference_median_by_seed": {
+            "0": -194.5,
+            "1": -190.0,
+            "2": -179.5
+          },
+          "wins": 0.023728813559322035,
+          "ties": 0.01694915254237288,
+          "losses": 0.9593220338983051
+        },
+        "eff_rank vs step_change": {
+          "difference": {
+            "median": 0.0,
+            "q25": -4.0,
+            "q75": 0.0
+          },
+          "difference_median_by_seed": {
+            "0": 0.0,
+            "1": 0.0,
+            "2": 0.0
+          },
+          "wins": 0.08135593220338982,
+          "ties": 0.6338983050847458,
+          "losses": 0.2847457627118644
+        },
+        "eff_rank vs spectral_drift": {
+          "difference": {
+            "median": -3.0,
+            "q25": -112.5,
+            "q75": 0.0
+          },
+          "difference_median_by_seed": {
+            "0": 0.0,
+            "1": -6.0,
+            "2": -4.0
+          },
+          "wins": 0.07457627118644068,
+          "ties": 0.37966101694915255,
+          "losses": 0.5457627118644067
+        },
+        "eff_rank vs pde_residual": {
+          "difference": {
+            "median": -187.0,
+            "q25": -197.0,
+            "q75": -86.5
+          },
+          "difference_median_by_seed": {
+            "0": -194.0,
+            "1": -188.0,
+            "2": -170.5
+          },
+          "wins": 0.010169491525423728,
+          "ties": 0.020338983050847456,
+          "losses": 0.9694915254237289
+        },
+        "train_dist vs step_change": {
+          "difference": {
+            "median": 0.0,
+            "q25": -13.0,
+            "q75": 0.0
+          },
+          "difference_median_by_seed": {
+            "0": 0.0,
+            "1": 0.0,
+            "2": 0.0
+          },
+          "wins": 0.09152542372881356,
+          "ties": 0.5830508474576271,
+          "losses": 0.3254237288135593
+        },
+        "train_dist vs spectral_drift": {
+          "difference": {
+            "median": -13.0,
+            "q25": -101.5,
+            "q75": 0.0
+          },
+          "difference_median_by_seed": {
+            "0": -6.0,
+            "1": -17.0,
+            "2": -15.0
+          },
+          "wins": 0.061016949152542375,
+          "ties": 0.36271186440677966,
+          "losses": 0.576271186440678
+        },
+        "train_dist vs pde_residual": {
+          "difference": {
+            "median": -176.0,
+            "q25": -197.0,
+            "q75": -85.0
+          },
+          "difference_median_by_seed": {
+            "0": -192.5,
+            "1": -167.0,
+            "2": -160.0
+          },
+          "wins": 0.04067796610169491,
+          "ties": 0.010169491525423728,
+          "losses": 0.9491525423728814
+        },
+        "act_norm vs clock": {
+          "difference": {
+            "median": -100.0,
+            "q25": -100.0,
+            "q75": -71.0
+          },
+          "difference_median_by_seed": {
+            "0": -100.0,
+            "1": -100.0,
+            "2": -100.0
+          },
+          "wins": 0.17966101694915254,
+          "ties": 0.0,
+          "losses": 0.8203389830508474
+        },
+        "eff_rank vs clock": {
+          "difference": {
+            "median": -100.0,
+            "q25": -100.0,
+            "q75": -28.0
+          },
+          "difference_median_by_seed": {
+            "0": -100.0,
+            "1": -100.0,
+            "2": -100.0
+          },
+          "wins": 0.19322033898305085,
+          "ties": 0.003389830508474576,
+          "losses": 0.8033898305084746
+        },
+        "train_dist vs clock": {
+          "difference": {
+            "median": -100.0,
+            "q25": -100.0,
+            "q75": -15.0
+          },
+          "difference_median_by_seed": {
+            "0": -100.0,
+            "1": -100.0,
+            "2": -100.0
+          },
+          "wins": 0.21016949152542372,
+          "ties": 0.0,
+          "losses": 0.7898305084745763
+        },
+        "step_change vs clock": {
+          "difference": {
+            "median": -100.0,
+            "q25": -100.0,
+            "q75": -4.5
+          },
+          "difference_median_by_seed": {
+            "0": -100.0,
+            "1": -100.0,
+            "2": -100.0
+          },
+          "wins": 0.24067796610169492,
+          "ties": 0.0,
+          "losses": 0.7593220338983051
+        },
+        "spectral_drift vs clock": {
+          "difference": {
+            "median": -5.0,
+            "q25": -100.0,
+            "q75": 37.5
+          },
+          "difference_median_by_seed": {
+            "0": -33.5,
+            "1": 5.0,
+            "2": -13.0
+          },
+          "wins": 0.4847457627118644,
+          "ties": 0.0,
+          "losses": 0.5152542372881356
+        },
+        "pde_residual vs clock": {
+          "difference": {
+            "median": 96.0,
+            "q25": 83.0,
+            "q75": 98.0
+          },
+          "difference_median_by_seed": {
+            "0": 96.0,
+            "1": 97.0,
+            "2": 92.0
+          },
+          "wins": 0.9322033898305084,
+          "ties": 0.0,
+          "losses": 0.06779661016949153
+        }
+      },
+      "supported": false
+    },
+    "viscosity_down": {
+      "seeds": {
+        "0": {
+          "rollouts": 100,
+          "failing": 94,
+          "median_failure_step": 39.5,
+          "thresholds": {
+            "act_norm": 2.1422318220138545,
+            "eff_rank": 2.304255890846252,
+            "train_dist": 1.9136687457561492,
+            "step_change": 2.372403991222381,
+            "spectral_drift": 4.474226045608514,
+            "pde_residual": 4.7042140245437585,
+            "clock": 100.0
+          }
+        },
+        "1": {
+          "rollouts": 100,
+          "failing": 92,
+          "median_failure_step": 36.0,
+          "thresholds": {
+            "act_norm": 2.0621693968772883,
+            "eff_rank": 2.343623554706573,
+            "train_dist": 2.006662619113921,
+            "step_change": 2.4184315323829644,
+            "spectral_drift": 3.2567977070808403,
+            "pde_residual": 3.814532959461211,
+            "clock": 100.0
+          }
+        },
+        "2": {
+          "rollouts": 100,
+          "failing": 87,
+          "median_failure_step": 44.0,
+          "thresholds": {
+            "act_norm": 2.067449438571929,
+            "eff_rank": 2.226694190502166,
+            "train_dist": 1.831933271884918,
+            "step_change": 2.3528894424438462,
+            "spectral_drift": 3.648358821868885,
+            "pde_residual": 4.181189894676208,
+            "clock": 100.0
+          }
+        }
+      },
+      "alarms": {
+        "act_norm": {
+          "lead_time": {
+            "median": -129.0,
+            "q25": -167.0,
+            "q75": -58.0
+          },
+          "lead_time_median_by_seed": {
+            "0": -132.5,
+            "1": -122.0,
+            "2": -132.0
+          },
+          "detection_rate": 0.08424908424908426,
+          "detection_rate_by_seed": {
+            "0": 0.06382978723404255,
+            "1": 0.05434782608695652,
+            "2": 0.13793103448275862
+          },
+          "false_alarm_rate": 0.04666666666666667,
+          "false_alarm_rate_by_seed": {
+            "0": 0.04,
+            "1": 0.04,
+            "2": 0.06
+          }
+        },
+        "eff_rank": {
+          "lead_time": {
+            "median": -121.0,
+            "q25": -165.0,
+            "q75": -46.0
+          },
+          "lead_time_median_by_seed": {
+            "0": -120.5,
+            "1": -121.0,
+            "2": -130.0
+          },
+          "detection_rate": 0.08791208791208792,
+          "detection_rate_by_seed": {
+            "0": 0.09574468085106383,
+            "1": 0.07608695652173914,
+            "2": 0.09195402298850575
+          },
+          "false_alarm_rate": 0.10666666666666667,
+          "false_alarm_rate_by_seed": {
+            "0": 0.11,
+            "1": 0.1,
+            "2": 0.11
+          }
+        },
+        "train_dist": {
+          "lead_time": {
+            "median": -120.0,
+            "q25": -164.0,
+            "q75": -48.0
+          },
+          "lead_time_median_by_seed": {
+            "0": -116.5,
+            "1": -120.0,
+            "2": -130.0
+          },
+          "detection_rate": 0.07692307692307693,
+          "detection_rate_by_seed": {
+            "0": 0.0851063829787234,
+            "1": 0.06521739130434782,
+            "2": 0.08045977011494253
+          },
+          "false_alarm_rate": 0.06333333333333334,
+          "false_alarm_rate_by_seed": {
+            "0": 0.08,
+            "1": 0.05,
+            "2": 0.06
+          }
+        },
+        "step_change": {
+          "lead_time": {
+            "median": -122.0,
+            "q25": -164.0,
+            "q75": -38.0
+          },
+          "lead_time_median_by_seed": {
+            "0": -123.0,
+            "1": -118.0,
+            "2": -131.0
+          },
+          "detection_rate": 0.06593406593406594,
+          "detection_rate_by_seed": {
+            "0": 0.07446808510638298,
+            "1": 0.05434782608695652,
+            "2": 0.06896551724137931
+          },
+          "false_alarm_rate": 0.06,
+          "false_alarm_rate_by_seed": {
+            "0": 0.06,
+            "1": 0.06,
+            "2": 0.06
+          }
+        },
+        "spectral_drift": {
+          "lead_time": {
+            "median": -58.0,
+            "q25": -155.0,
+            "q75": -14.0
+          },
+          "lead_time_median_by_seed": {
+            "0": -56.5,
+            "1": -56.0,
+            "2": -61.0
+          },
+          "detection_rate": 0.08791208791208792,
+          "detection_rate_by_seed": {
+            "0": 0.09574468085106383,
+            "1": 0.043478260869565216,
+            "2": 0.12643678160919541
+          },
+          "false_alarm_rate": 0.043333333333333335,
+          "false_alarm_rate_by_seed": {
+            "0": 0.05,
+            "1": 0.04,
+            "2": 0.04
+          }
+        },
+        "pde_residual": {
+          "lead_time": {
+            "median": -86.0,
+            "q25": -161.0,
+            "q75": -19.0
+          },
+          "lead_time_median_by_seed": {
+            "0": -105.5,
+            "1": -78.5,
+            "2": -96.0
+          },
+          "detection_rate": 0.054945054945054944,
+          "detection_rate_by_seed": {
+            "0": 0.031914893617021274,
+            "1": 0.07608695652173914,
+            "2": 0.05747126436781609
+          },
+          "false_alarm_rate": 0.023333333333333334,
+          "false_alarm_rate_by_seed": {
+            "0": 0.01,
+            "1": 0.05,
+            "2": 0.01
+          }
+        },
+        "clock": {
+          "lead_time": {
+            "median": -60.0,
+            "q25": -75.0,
+            "q75": -29.0
+          },
+          "lead_time_median_by_seed": {
+            "0": -60.5,
+            "1": -64.0,
+            "2": -56.0
+          },
+          "detection_rate": 0.11721611721611722,
+          "detection_rate_by_seed": {
+            "0": 0.14893617021276595,
+            "1": 0.08695652173913043,
+            "2": 0.11494252873563218
+          },
+          "false_alarm_rate": 0.0,
+          "false_alarm_rate_by_seed": {
+            "0": 0.0,
+            "1": 0.0,
+            "2": 0.0
+          }
+        }
+      },
+      "head_to_head": {
+        "act_norm vs step_change": {
+          "difference": {
+            "median": 0.0,
+            "q25": 0.0,
+            "q75": 0.0
+          },
+          "difference_median_by_seed": {
+            "0": 0.0,
+            "1": 0.0,
+            "2": 0.0
+          },
+          "wins": 0.12454212454212454,
+          "ties": 0.6336996336996337,
+          "losses": 0.24175824175824176
+        },
+        "act_norm vs spectral_drift": {
+          "difference": {
+            "median": 0.0,
+            "q25": -53.0,
+            "q75": 0.0
+          },
+          "difference_median_by_seed": {
+            "0": 0.0,
+            "1": 0.0,
+            "2": 0.0
+          },
+          "wins": 0.13186813186813187,
+          "ties": 0.46153846153846156,
+          "losses": 0.4065934065934066
+        },
+        "act_norm vs pde_residual": {
+          "difference": {
+            "median": 0.0,
+            "q25": -10.0,
+            "q75": 0.0
+          },
+          "difference_median_by_seed": {
+            "0": 0.0,
+            "1": 0.0,
+            "2": 0.0
+          },
+          "wins": 0.14652014652014653,
+          "ties": 0.5054945054945055,
+          "losses": 0.34798534798534797
+        },
+        "eff_rank vs step_change": {
+          "difference": {
+            "median": 0.0,
+            "q25": -1.0,
+            "q75": 0.0
+          },
+          "difference_median_by_seed": {
+            "0": 0.0,
+            "1": 0.0,
+            "2": 0.0
+          },
+          "wins": 0.10622710622710622,
+          "ties": 0.6336996336996337,
+          "losses": 0.2600732600732601
+        },
+        "eff_rank vs spectral_drift": {
+          "difference": {
+            "median": 0.0,
+            "q25": -32.0,
+            "q75": 0.0
+          },
+          "difference_median_by_seed": {
+            "0": 0.0,
+            "1": 0.0,
+            "2": 0.0
+          },
+          "wins": 0.12454212454212454,
+          "ties": 0.45054945054945056,
+          "losses": 0.4249084249084249
+        },
+        "eff_rank vs pde_residual": {
+          "difference": {
+            "median": 0.0,
+            "q25": -8.0,
+            "q75": 0.0
+          },
+          "difference_median_by_seed": {
+            "0": 0.0,
+            "1": 0.0,
+            "2": 0.0
+          },
+          "wins": 0.17216117216117216,
+          "ties": 0.4652014652014652,
+          "losses": 0.3626373626373626
+        },
+        "train_dist vs step_change": {
+          "difference": {
+            "median": 0.0,
+            "q25": -10.0,
+            "q75": 0.0
+          },
+          "difference_median_by_seed": {
+            "0": 0.0,
+            "1": 0.0,
+            "2": 0.0
+          },
+          "wins": 0.047619047619047616,
+          "ties": 0.652014652014652,
+          "losses": 0.30036630036630035
+        },
+        "train_dist vs spectral_drift": {
+          "difference": {
+            "median": 0.0,
+            "q25": -38.0,
+            "q75": 0.0
+          },
+          "difference_median_by_seed": {
+            "0": 0.0,
+            "1": 0.0,
+            "2": 0.0
+          },
+          "wins": 0.07692307692307693,
+          "ties": 0.4652014652014652,
+          "losses": 0.45787545787545786
+        },
+        "train_dist vs pde_residual": {
+          "difference": {
+            "median": 0.0,
+            "q25": -15.0,
+            "q75": 0.0
+          },
+          "difference_median_by_seed": {
+            "0": 0.0,
+            "1": 0.0,
+            "2": 0.0
+          },
+          "wins": 0.08424908424908426,
+          "ties": 0.4835164835164835,
+          "losses": 0.43223443223443225
+        },
+        "act_norm vs clock": {
+          "difference": {
+            "median": -100.0,
+            "q25": -100.0,
+            "q75": -8.0
+          },
+          "difference_median_by_seed": {
+            "0": -100.0,
+            "1": -100.0,
+            "2": -100.0
+          },
+          "wins": 0.23076923076923078,
+          "ties": 0.007326007326007326,
+          "losses": 0.7619047619047619
+        },
+        "eff_rank vs clock": {
+          "difference": {
+            "median": -100.0,
+            "q25": -100.0,
+            "q75": 10.0
+          },
+          "difference_median_by_seed": {
+            "0": -100.0,
+            "1": -100.0,
+            "2": -100.0
+          },
+          "wins": 0.2783882783882784,
+          "ties": 0.0,
+          "losses": 0.7216117216117216
+        },
+        "train_dist vs clock": {
+          "difference": {
+            "median": -100.0,
+            "q25": -100.0,
+            "q75": -7.0
+          },
+          "difference_median_by_seed": {
+            "0": -100.0,
+            "1": -100.0,
+            "2": -100.0
+          },
+          "wins": 0.2271062271062271,
+          "ties": 0.0,
+          "losses": 0.7728937728937729
+        },
+        "step_change vs clock": {
+          "difference": {
+            "median": -100.0,
+            "q25": -100.0,
+            "q75": 7.0
+          },
+          "difference_median_by_seed": {
+            "0": -100.0,
+            "1": -100.0,
+            "2": -100.0
+          },
+          "wins": 0.28205128205128205,
+          "ties": 0.0,
+          "losses": 0.717948717948718
+        },
+        "spectral_drift vs clock": {
+          "difference": {
+            "median": -39.0,
+            "q25": -100.0,
+            "q75": 33.0
+          },
+          "difference_median_by_seed": {
+            "0": -41.5,
+            "1": -37.5,
+            "2": -26.0
+          },
+          "wins": 0.4139194139194139,
+          "ties": 0.003663003663003663,
+          "losses": 0.5824175824175825
+        },
+        "pde_residual vs clock": {
+          "difference": {
+            "median": -100.0,
+            "q25": -100.0,
+            "q75": 17.0
+          },
+          "difference_median_by_seed": {
+            "0": -100.0,
+            "1": -74.5,
+            "2": -100.0
+          },
+          "wins": 0.3076923076923077,
+          "ties": 0.003663003663003663,
+          "losses": 0.6886446886446886
+        }
+      },
+      "supported": false
+    },
+    "rougher_waves": {
+      "seeds": {
+        "0": {
+          "rollouts": 100,
+          "failing": 92,
+          "median_failure_step": 28.5,
+          "thresholds": {
+            "act_norm": 2.1422318220138545,
+            "eff_rank": 2.304255890846252,
+            "train_dist": 1.9136687457561492,
+            "step_change": 2.372403991222381,
+            "spectral_drift": 4.474226045608514,
+            "pde_residual": 4.7042140245437585,
+            "clock": 100.0
+          }
+        },
+        "1": {
+          "rollouts": 100,
+          "failing": 96,
+          "median_failure_step": 27.5,
+          "thresholds": {
+            "act_norm": 2.0621693968772883,
+            "eff_rank": 2.343623554706573,
+            "train_dist": 2.006662619113921,
+            "step_change": 2.4184315323829644,
+            "spectral_drift": 3.2567977070808403,
+            "pde_residual": 3.814532959461211,
+            "clock": 100.0
+          }
+        },
+        "2": {
+          "rollouts": 100,
+          "failing": 91,
+          "median_failure_step": 33.0,
+          "thresholds": {
+            "act_norm": 2.067449438571929,
+            "eff_rank": 2.226694190502166,
+            "train_dist": 1.831933271884918,
+            "step_change": 2.3528894424438462,
+            "spectral_drift": 3.648358821868885,
+            "pde_residual": 4.181189894676208,
+            "clock": 100.0
+          }
+        }
+      },
+      "alarms": {
+        "act_norm": {
+          "lead_time": {
+            "median": -155.0,
+            "q25": -176.0,
+            "q75": -89.0
+          },
+          "lead_time_median_by_seed": {
+            "0": -159.0,
+            "1": -150.5,
+            "2": -158.0
+          },
+          "detection_rate": 0.043010752688172046,
+          "detection_rate_by_seed": {
+            "0": 0.043478260869565216,
+            "1": 0.041666666666666664,
+            "2": 0.04395604395604396
+          },
+          "false_alarm_rate": 0.023333333333333334,
+          "false_alarm_rate_by_seed": {
+            "0": 0.02,
+            "1": 0.02,
+            "2": 0.03
+          }
+        },
+        "eff_rank": {
+          "lead_time": {
+            "median": -150.0,
+            "q25": -173.5,
+            "q75": -72.5
+          },
+          "lead_time_median_by_seed": {
+            "0": -157.5,
+            "1": -145.0,
+            "2": -139.0
+          },
+          "detection_rate": 0.03225806451612903,
+          "detection_rate_by_seed": {
+            "0": 0.043478260869565216,
+            "1": 0.020833333333333332,
+            "2": 0.03296703296703297
+          },
+          "false_alarm_rate": 0.03666666666666667,
+          "false_alarm_rate_by_seed": {
+            "0": 0.03,
+            "1": 0.03,
+            "2": 0.05
+          }
+        },
+        "train_dist": {
+          "lead_time": {
+            "median": -126.0,
+            "q25": -167.0,
+            "q75": -44.0
+          },
+          "lead_time_median_by_seed": {
+            "0": -136.0,
+            "1": -113.0,
+            "2": -125.0
+          },
+          "detection_rate": 0.08960573476702509,
+          "detection_rate_by_seed": {
+            "0": 0.08695652173913043,
+            "1": 0.08333333333333333,
+            "2": 0.0989010989010989
+          },
+          "false_alarm_rate": 0.07,
+          "false_alarm_rate_by_seed": {
+            "0": 0.07,
+            "1": 0.08,
+            "2": 0.06
+          }
+        },
+        "step_change": {
+          "lead_time": {
+            "median": -144.0,
+            "q25": -171.5,
+            "q75": -49.0
+          },
+          "lead_time_median_by_seed": {
+            "0": -156.0,
+            "1": -125.0,
+            "2": -144.0
+          },
+          "detection_rate": 0.08602150537634409,
+          "detection_rate_by_seed": {
+            "0": 0.07608695652173914,
+            "1": 0.08333333333333333,
+            "2": 0.0989010989010989
+          },
+          "false_alarm_rate": 0.07333333333333333,
+          "false_alarm_rate_by_seed": {
+            "0": 0.07,
+            "1": 0.07,
+            "2": 0.08
+          }
+        },
+        "spectral_drift": {
+          "lead_time": {
+            "median": -102.0,
+            "q25": -167.0,
+            "q75": -19.0
+          },
+          "lead_time_median_by_seed": {
+            "0": -116.5,
+            "1": -77.5,
+            "2": -112.0
+          },
+          "detection_rate": 0.08960573476702509,
+          "detection_rate_by_seed": {
+            "0": 0.10869565217391304,
+            "1": 0.07291666666666667,
+            "2": 0.08791208791208792
+          },
+          "false_alarm_rate": 0.04,
+          "false_alarm_rate_by_seed": {
+            "0": 0.05,
+            "1": 0.01,
+            "2": 0.06
+          }
+        },
+        "pde_residual": {
+          "lead_time": {
+            "median": -136.0,
+            "q25": -170.0,
+            "q75": -29.0
+          },
+          "lead_time_median_by_seed": {
+            "0": -147.0,
+            "1": -115.0,
+            "2": -138.0
+          },
+          "detection_rate": 0.11469534050179211,
+          "detection_rate_by_seed": {
+            "0": 0.08695652173913043,
+            "1": 0.125,
+            "2": 0.13186813186813187
+          },
+          "false_alarm_rate": 0.043333333333333335,
+          "false_alarm_rate_by_seed": {
+            "0": 0.03,
+            "1": 0.03,
+            "2": 0.07
+          }
+        },
+        "clock": {
+          "lead_time": {
+            "median": -70.0,
+            "q25": -81.5,
+            "q75": -51.5
+          },
+          "lead_time_median_by_seed": {
+            "0": -71.5,
+            "1": -72.5,
+            "2": -67.0
+          },
+          "detection_rate": 0.04659498207885305,
+          "detection_rate_by_seed": {
+            "0": 0.043478260869565216,
+            "1": 0.041666666666666664,
+            "2": 0.054945054945054944
+          },
+          "false_alarm_rate": 0.0,
+          "false_alarm_rate_by_seed": {
+            "0": 0.0,
+            "1": 0.0,
+            "2": 0.0
+          }
+        }
+      },
+      "head_to_head": {
+        "act_norm vs step_change": {
+          "difference": {
+            "median": 0.0,
+            "q25": -9.0,
+            "q75": 0.0
+          },
+          "difference_median_by_seed": {
+            "0": 0.0,
+            "1": 0.0,
+            "2": 0.0
+          },
+          "wins": 0.06451612903225806,
+          "ties": 0.6200716845878136,
+          "losses": 0.3154121863799283
+        },
+        "act_norm vs spectral_drift": {
+          "difference": {
+            "median": 0.0,
+            "q25": -64.5,
+            "q75": 0.0
+          },
+          "difference_median_by_seed": {
+            "0": 0.0,
+            "1": 0.0,
+            "2": 0.0
+          },
+          "wins": 0.06810035842293907,
+          "ties": 0.4982078853046595,
+          "losses": 0.4336917562724014
+        },
+        "act_norm vs pde_residual": {
+          "difference": {
+            "median": 0.0,
+            "q25": -17.0,
+            "q75": 0.0
+          },
+          "difference_median_by_seed": {
+            "0": 0.0,
+            "1": 0.0,
+            "2": 0.0
+          },
+          "wins": 0.07168458781362007,
+          "ties": 0.5842293906810035,
+          "losses": 0.34408602150537637
+        },
+        "eff_rank vs step_change": {
+          "difference": {
+            "median": 0.0,
+            "q25": -1.0,
+            "q75": 0.0
+          },
+          "difference_median_by_seed": {
+            "0": 0.0,
+            "1": 0.0,
+            "2": 0.0
+          },
+          "wins": 0.08960573476702509,
+          "ties": 0.6379928315412187,
+          "losses": 0.2724014336917563
+        },
+        "eff_rank vs spectral_drift": {
+          "difference": {
+            "median": 0.0,
+            "q25": -34.5,
+            "q75": 0.0
+          },
+          "difference_median_by_seed": {
+            "0": 0.0,
+            "1": 0.0,
+            "2": 0.0
+          },
+          "wins": 0.0967741935483871,
+          "ties": 0.4946236559139785,
+          "losses": 0.40860215053763443
+        },
+        "eff_rank vs pde_residual": {
+          "difference": {
+            "median": 0.0,
+            "q25": -5.0,
+            "q75": 0.0
+          },
+          "difference_median_by_seed": {
+            "0": 0.0,
+            "1": 0.0,
+            "2": 0.0
+          },
+          "wins": 0.13261648745519714,
+          "ties": 0.5663082437275986,
+          "losses": 0.3010752688172043
+        },
+        "train_dist vs step_change": {
+          "difference": {
+            "median": 0.0,
+            "q25": -10.5,
+            "q75": 0.0
+          },
+          "difference_median_by_seed": {
+            "0": 0.0,
+            "1": 0.0,
+            "2": 0.0
+          },
+          "wins": 0.14695340501792115,
+          "ties": 0.5304659498207885,
+          "losses": 0.3225806451612903
+        },
+        "train_dist vs spectral_drift": {
+          "difference": {
+            "median": 0.0,
+            "q25": -23.5,
+            "q75": 0.0
+          },
+          "difference_median_by_seed": {
+            "0": 0.0,
+            "1": 0.0,
+            "2": 0.0
+          },
+          "wins": 0.15053763440860216,
+          "ties": 0.4265232974910394,
+          "losses": 0.4229390681003584
+        },
+        "train_dist vs pde_residual": {
+          "difference": {
+            "median": 0.0,
+            "q25": -14.5,
+            "q75": 0.0
+          },
+          "difference_median_by_seed": {
+            "0": 0.0,
+            "1": 0.0,
+            "2": 0.0
+          },
+          "wins": 0.15412186379928317,
+          "ties": 0.4874551971326165,
+          "losses": 0.35842293906810035
+        },
+        "act_norm vs clock": {
+          "difference": {
+            "median": -100.0,
+            "q25": -100.0,
+            "q75": -64.5
+          },
+          "difference_median_by_seed": {
+            "0": -100.0,
+            "1": -100.0,
+            "2": -100.0
+          },
+          "wins": 0.1863799283154122,
+          "ties": 0.0,
+          "losses": 0.8136200716845878
+        },
+        "eff_rank vs clock": {
+          "difference": {
+            "median": -100.0,
+            "q25": -100.0,
+            "q75": -6.0
+          },
+          "difference_median_by_seed": {
+            "0": -100.0,
+            "1": -100.0,
+            "2": -100.0
+          },
+          "wins": 0.2222222222222222,
+          "ties": 0.0035842293906810036,
+          "losses": 0.7741935483870968
+        },
+        "train_dist vs clock": {
+          "difference": {
+            "median": -100.0,
+            "q25": -100.0,
+            "q75": 21.0
+          },
+          "difference_median_by_seed": {
+            "0": -100.0,
+            "1": -100.0,
+            "2": -100.0
+          },
+          "wins": 0.31899641577060933,
+          "ties": 0.0035842293906810036,
+          "losses": 0.6774193548387096
+        },
+        "step_change vs clock": {
+          "difference": {
+            "median": -100.0,
+            "q25": -100.0,
+            "q75": 14.0
+          },
+          "difference_median_by_seed": {
+            "0": -100.0,
+            "1": -100.0,
+            "2": -100.0
+          },
+          "wins": 0.3046594982078853,
+          "ties": 0.0,
+          "losses": 0.6953405017921147
+        },
+        "spectral_drift vs clock": {
+          "difference": {
+            "median": -100.0,
+            "q25": -100.0,
+            "q75": 42.5
+          },
+          "difference_median_by_seed": {
+            "0": -100.0,
+            "1": -23.0,
+            "2": -100.0
+          },
+          "wins": 0.41935483870967744,
+          "ties": 0.0035842293906810036,
+          "losses": 0.5770609318996416
+        },
+        "pde_residual vs clock": {
+          "difference": {
+            "median": -100.0,
+            "q25": -100.0,
+            "q75": 30.5
+          },
+          "difference_median_by_seed": {
+            "0": -100.0,
+            "1": -100.0,
+            "2": -100.0
+          },
+          "wins": 0.34050179211469533,
+          "ties": 0.0,
+          "losses": 0.6594982078853047
+        }
+      },
+      "supported": false
+    }
+  },
+  "settings_supported": [],
+  "overall_supported": false,
+  "false_alarm_rate_target": 0.05,
+  "verdict_rule": "In each setting: supported if at least one internal alarm has a median lead-time difference above zero against EVERY output-side alarm, in EVERY seed. Overall: supported in at least 3 of 4 settings.",
+  "tradeoff": {
+    "control": {
+      "act_norm": [
+        {
+          "target": 0.01,
+          "false_alarm_rate": 0.04666666666666667,
+          "detection_rate": 0.078125
+        },
+        {
+          "target": 0.02,
+          "false_alarm_rate": 0.05,
+          "detection_rate": 0.08203125
+        },
+        {
+          "target": 0.05,
+          "false_alarm_rate": 0.06,
+          "detection_rate": 0.09765625
+        },
+        {
+          "target": 0.1,
+          "false_alarm_rate": 0.09,
+          "detection_rate": 0.11328125
+        },
+        {
+          "target": 0.2,
+          "false_alarm_rate": 0.12333333333333334,
+          "detection_rate": 0.13671875
+        },
+        {
+          "target": 0.3,
+          "false_alarm_rate": 0.23666666666666666,
+          "detection_rate": 0.30078125
+        },
+        {
+          "target": 0.5,
+          "false_alarm_rate": 0.5233333333333333,
+          "detection_rate": 0.57421875
+        }
+      ],
+      "eff_rank": [
+        {
+          "target": 0.01,
+          "false_alarm_rate": 0.016666666666666666,
+          "detection_rate": 0.01171875
+        },
+        {
+          "target": 0.02,
+          "false_alarm_rate": 0.02,
+          "detection_rate": 0.015625
+        },
+        {
+          "target": 0.05,
+          "false_alarm_rate": 0.05333333333333334,
+          "detection_rate": 0.0546875
+        },
+        {
+          "target": 0.1,
+          "false_alarm_rate": 0.09333333333333334,
+          "detection_rate": 0.09765625
+        },
+        {
+          "target": 0.2,
+          "false_alarm_rate": 0.16333333333333333,
+          "detection_rate": 0.16015625
+        },
+        {
+          "target": 0.3,
+          "false_alarm_rate": 0.24666666666666667,
+          "detection_rate": 0.2421875
+        },
+        {
+          "target": 0.5,
+          "false_alarm_rate": 0.42333333333333334,
+          "detection_rate": 0.45703125
+        }
+      ],
+      "train_dist": [
+        {
+          "target": 0.01,
+          "false_alarm_rate": 0.01,
+          "detection_rate": 0.01171875
+        },
+        {
+          "target": 0.02,
+          "false_alarm_rate": 0.016666666666666666,
+          "detection_rate": 0.01953125
+        },
+        {
+          "target": 0.05,
+          "false_alarm_rate": 0.023333333333333334,
+          "detection_rate": 0.02734375
+        },
+        {
+          "target": 0.1,
+          "false_alarm_rate": 0.07333333333333333,
+          "detection_rate": 0.09375
+        },
+        {
+          "target": 0.2,
+          "false_alarm_rate": 0.15,
+          "detection_rate": 0.1953125
+        },
+        {
+          "target": 0.3,
+          "false_alarm_rate": 0.22666666666666666,
+          "detection_rate": 0.28515625
+        },
+        {
+          "target": 0.5,
+          "false_alarm_rate": 0.5033333333333333,
+          "detection_rate": 0.5703125
+        }
+      ],
+      "step_change": [
+        {
+          "target": 0.01,
+          "false_alarm_rate": 0.0033333333333333335,
+          "detection_rate": 0.0078125
+        },
+        {
+          "target": 0.02,
+          "false_alarm_rate": 0.016666666666666666,
+          "detection_rate": 0.03515625
+        },
+        {
+          "target": 0.05,
+          "false_alarm_rate": 0.02666666666666667,
+          "detection_rate": 0.05859375
+        },
+        {
+          "target": 0.1,
+          "false_alarm_rate": 0.09,
+          "detection_rate": 0.15625
+        },
+        {
+          "target": 0.2,
+          "false_alarm_rate": 0.15333333333333332,
+          "detection_rate": 0.25390625
+        },
+        {
+          "target": 0.3,
+          "false_alarm_rate": 0.22666666666666666,
+          "detection_rate": 0.31640625
+        },
+        {
+          "target": 0.5,
+          "false_alarm_rate": 0.5,
+          "detection_rate": 0.58984375
+        }
+      ],
+      "spectral_drift": [
+        {
+          "target": 0.01,
+          "false_alarm_rate": 0.0033333333333333335,
+          "detection_rate": 0.04296875
+        },
+        {
+          "target": 0.02,
+          "false_alarm_rate": 0.006666666666666667,
+          "detection_rate": 0.0703125
+        },
+        {
+          "target": 0.05,
+          "false_alarm_rate": 0.04,
+          "detection_rate": 0.1171875
+        },
+        {
+          "target": 0.1,
+          "false_alarm_rate": 0.07333333333333333,
+          "detection_rate": 0.21875
+        },
+        {
+          "target": 0.2,
+          "false_alarm_rate": 0.16666666666666666,
+          "detection_rate": 0.33203125
+        },
+        {
+          "target": 0.3,
+          "false_alarm_rate": 0.23,
+          "detection_rate": 0.421875
+        },
+        {
+          "target": 0.5,
+          "false_alarm_rate": 0.4533333333333333,
+          "detection_rate": 0.6171875
+        }
+      ],
+      "pde_residual": [
+        {
+          "target": 0.01,
+          "false_alarm_rate": 0.02666666666666667,
+          "detection_rate": 0.05859375
+        },
+        {
+          "target": 0.02,
+          "false_alarm_rate": 0.04,
+          "detection_rate": 0.0859375
+        },
+        {
+          "target": 0.05,
+          "false_alarm_rate": 0.06666666666666667,
+          "detection_rate": 0.13671875
+        },
+        {
+          "target": 0.1,
+          "false_alarm_rate": 0.09,
+          "detection_rate": 0.1875
+        },
+        {
+          "target": 0.2,
+          "false_alarm_rate": 0.16333333333333333,
+          "detection_rate": 0.296875
+        },
+        {
+          "target": 0.3,
+          "false_alarm_rate": 0.24333333333333335,
+          "detection_rate": 0.40625
+        },
+        {
+          "target": 0.5,
+          "false_alarm_rate": 0.4633333333333333,
+          "detection_rate": 0.60546875
+        }
+      ],
+      "clock": [
+        {
+          "target": 0.01,
+          "false_alarm_rate": 0.0,
+          "detection_rate": 0.171875
+        },
+        {
+          "target": 0.02,
+          "false_alarm_rate": 0.0,
+          "detection_rate": 0.171875
+        },
+        {
+          "target": 0.05,
+          "false_alarm_rate": 0.0,
+          "detection_rate": 0.171875
+        },
+        {
+          "target": 0.1,
+          "false_alarm_rate": 0.0,
+          "detection_rate": 0.171875
+        },
+        {
+          "target": 0.2,
+          "false_alarm_rate": 0.26,
+          "detection_rate": 0.44921875
+        },
+        {
+          "target": 0.3,
+          "false_alarm_rate": 0.35,
+          "detection_rate": 0.57421875
+        },
+        {
+          "target": 0.5,
+          "false_alarm_rate": 0.6066666666666667,
+          "detection_rate": 0.8046875
+        }
+      ]
+    },
+    "viscosity_up": {
+      "act_norm": [
+        {
+          "target": 0.01,
+          "false_alarm_rate": 0.02,
+          "detection_rate": 0.020338983050847456
+        },
+        {
+          "target": 0.02,
+          "false_alarm_rate": 0.023333333333333334,
+          "detection_rate": 0.020338983050847456
+        },
+        {
+          "target": 0.05,
+          "false_alarm_rate": 0.023333333333333334,
+          "detection_rate": 0.02711864406779661
+        },
+        {
+          "target": 0.1,
+          "false_alarm_rate": 0.043333333333333335,
+          "detection_rate": 0.05084745762711865
+        },
+        {
+          "target": 0.2,
+          "false_alarm_rate": 0.056666666666666664,
+          "detection_rate": 0.06440677966101695
+        },
+        {
+          "target": 0.3,
+          "false_alarm_rate": 0.09666666666666666,
+          "detection_rate": 0.1423728813559322
+        },
+        {
+          "target": 0.5,
+          "false_alarm_rate": 0.36,
+          "detection_rate": 0.39661016949152544
+        }
+      ],
+      "eff_rank": [
+        {
+          "target": 0.01,
+          "false_alarm_rate": 0.0,
+          "detection_rate": 0.0
+        },
+        {
+          "target": 0.02,
+          "false_alarm_rate": 0.0033333333333333335,
+          "detection_rate": 0.003389830508474576
+        },
+        {
+          "target": 0.05,
+          "false_alarm_rate": 0.023333333333333334,
+          "detection_rate": 0.030508474576271188
+        },
+        {
+          "target": 0.1,
+          "false_alarm_rate": 0.06,
+          "detection_rate": 0.07457627118644068
+        },
+        {
+          "target": 0.2,
+          "false_alarm_rate": 0.14,
+          "detection_rate": 0.13898305084745763
+        },
+        {
+          "target": 0.3,
+          "false_alarm_rate": 0.18333333333333332,
+          "detection_rate": 0.18983050847457628
+        },
+        {
+          "target": 0.5,
+          "false_alarm_rate": 0.3333333333333333,
+          "detection_rate": 0.36271186440677966
+        }
+      ],
+      "train_dist": [
+        {
+          "target": 0.01,
+          "false_alarm_rate": 0.013333333333333334,
+          "detection_rate": 0.013559322033898305
+        },
+        {
+          "target": 0.02,
+          "false_alarm_rate": 0.02666666666666667,
+          "detection_rate": 0.02711864406779661
+        },
+        {
+          "target": 0.05,
+          "false_alarm_rate": 0.043333333333333335,
+          "detection_rate": 0.05423728813559322
+        },
+        {
+          "target": 0.1,
+          "false_alarm_rate": 0.09666666666666666,
+          "detection_rate": 0.1016949152542373
+        },
+        {
+          "target": 0.2,
+          "false_alarm_rate": 0.16333333333333333,
+          "detection_rate": 0.17966101694915254
+        },
+        {
+          "target": 0.3,
+          "false_alarm_rate": 0.22666666666666666,
+          "detection_rate": 0.2711864406779661
+        },
+        {
+          "target": 0.5,
+          "false_alarm_rate": 0.47333333333333333,
+          "detection_rate": 0.5186440677966102
+        }
+      ],
+      "step_change": [
+        {
+          "target": 0.01,
+          "false_alarm_rate": 0.006666666666666667,
+          "detection_rate": 0.006779661016949152
+        },
+        {
+          "target": 0.02,
+          "false_alarm_rate": 0.01,
+          "detection_rate": 0.020338983050847456
+        },
+        {
+          "target": 0.05,
+          "false_alarm_rate": 0.043333333333333335,
+          "detection_rate": 0.04745762711864407
+        },
+        {
+          "target": 0.1,
+          "false_alarm_rate": 0.07,
+          "detection_rate": 0.08135593220338982
+        },
+        {
+          "target": 0.2,
+          "false_alarm_rate": 0.11,
+          "detection_rate": 0.12542372881355932
+        },
+        {
+          "target": 0.3,
+          "false_alarm_rate": 0.14666666666666667,
+          "detection_rate": 0.2135593220338983
+        },
+        {
+          "target": 0.5,
+          "false_alarm_rate": 0.33,
+          "detection_rate": 0.43050847457627117
+        }
+      ],
+      "spectral_drift": [
+        {
+          "target": 0.01,
+          "false_alarm_rate": 0.013333333333333334,
+          "detection_rate": 0.030508474576271188
+        },
+        {
+          "target": 0.02,
+          "false_alarm_rate": 0.013333333333333334,
+          "detection_rate": 0.03728813559322034
+        },
+        {
+          "target": 0.05,
+          "false_alarm_rate": 0.03666666666666667,
+          "detection_rate": 0.06440677966101695
+        },
+        {
+          "target": 0.1,
+          "false_alarm_rate": 0.07,
+          "detection_rate": 0.11186440677966102
+        },
+        {
+          "target": 0.2,
+          "false_alarm_rate": 0.15,
+          "detection_rate": 0.2135593220338983
+        },
+        {
+          "target": 0.3,
+          "false_alarm_rate": 0.22666666666666666,
+          "detection_rate": 0.3152542372881356
+        },
+        {
+          "target": 0.5,
+          "false_alarm_rate": 0.3566666666666667,
+          "detection_rate": 0.488135593220339
+        }
+      ],
+      "pde_residual": [
+        {
+          "target": 0.01,
+          "false_alarm_rate": 0.4766666666666667,
+          "detection_rate": 0.6305084745762712
+        },
+        {
+          "target": 0.02,
+          "false_alarm_rate": 0.6466666666666666,
+          "detection_rate": 0.7661016949152543
+        },
+        {
+          "target": 0.05,
+          "false_alarm_rate": 0.7566666666666667,
+          "detection_rate": 0.8271186440677966
+        },
+        {
+          "target": 0.1,
+          "false_alarm_rate": 0.8233333333333334,
+          "detection_rate": 0.8779661016949153
+        },
+        {
+          "target": 0.2,
+          "false_alarm_rate": 0.9066666666666666,
+          "detection_rate": 0.9559322033898305
+        },
+        {
+          "target": 0.3,
+          "false_alarm_rate": 0.9466666666666667,
+          "detection_rate": 0.9728813559322034
+        },
+        {
+          "target": 0.5,
+          "false_alarm_rate": 0.9966666666666667,
+          "detection_rate": 0.9966101694915255
+        }
+      ],
+      "clock": [
+        {
+          "target": 0.01,
+          "false_alarm_rate": 0.0,
+          "detection_rate": 0.04067796610169491
+        },
+        {
+          "target": 0.02,
+          "false_alarm_rate": 0.0,
+          "detection_rate": 0.04067796610169491
+        },
+        {
+          "target": 0.05,
+          "false_alarm_rate": 0.0,
+          "detection_rate": 0.04067796610169491
+        },
+        {
+          "target": 0.1,
+          "false_alarm_rate": 0.0,
+          "detection_rate": 0.04067796610169491
+        },
+        {
+          "target": 0.2,
+          "false_alarm_rate": 0.03,
+          "detection_rate": 0.17966101694915254
+        },
+        {
+          "target": 0.3,
+          "false_alarm_rate": 0.08,
+          "detection_rate": 0.3220338983050847
+        },
+        {
+          "target": 0.5,
+          "false_alarm_rate": 0.2966666666666667,
+          "detection_rate": 0.688135593220339
+        }
+      ]
+    },
+    "viscosity_down": {
+      "act_norm": [
+        {
+          "target": 0.01,
+          "false_alarm_rate": 0.01,
+          "detection_rate": 0.040293040293040296
+        },
+        {
+          "target": 0.02,
+          "false_alarm_rate": 0.023333333333333334,
+          "detection_rate": 0.06593406593406594
+        },
+        {
+          "target": 0.05,
+          "false_alarm_rate": 0.04666666666666667,
+          "detection_rate": 0.08424908424908426
+        },
+        {
+          "target": 0.1,
+          "false_alarm_rate": 0.08333333333333333,
+          "detection_rate": 0.13186813186813187
+        },
+        {
+          "target": 0.2,
+          "false_alarm_rate": 0.14333333333333334,
+          "detection_rate": 0.19413919413919414
+        },
+        {
+          "target": 0.3,
+          "false_alarm_rate": 0.27,
+          "detection_rate": 0.304029304029304
+        },
+        {
+          "target": 0.5,
+          "false_alarm_rate": 0.4633333333333333,
+          "detection_rate": 0.4945054945054945
+        }
+      ],
+      "eff_rank": [
+        {
+          "target": 0.01,
+          "false_alarm_rate": 0.04,
+          "detection_rate": 0.03663003663003663
+        },
+        {
+          "target": 0.02,
+          "false_alarm_rate": 0.05,
+          "detection_rate": 0.040293040293040296
+        },
+        {
+          "target": 0.05,
+          "false_alarm_rate": 0.10666666666666667,
+          "detection_rate": 0.08791208791208792
+        },
+        {
+          "target": 0.1,
+          "false_alarm_rate": 0.13333333333333333,
+          "detection_rate": 0.1282051282051282
+        },
+        {
+          "target": 0.2,
+          "false_alarm_rate": 0.22,
+          "detection_rate": 0.20512820512820512
+        },
+        {
+          "target": 0.3,
+          "false_alarm_rate": 0.2833333333333333,
+          "detection_rate": 0.2783882783882784
+        },
+        {
+          "target": 0.5,
+          "false_alarm_rate": 0.4266666666666667,
+          "detection_rate": 0.45054945054945056
+        }
+      ],
+      "train_dist": [
+        {
+          "target": 0.01,
+          "false_alarm_rate": 0.01,
+          "detection_rate": 0.018315018315018316
+        },
+        {
+          "target": 0.02,
+          "false_alarm_rate": 0.02,
+          "detection_rate": 0.040293040293040296
+        },
+        {
+          "target": 0.05,
+          "false_alarm_rate": 0.06333333333333334,
+          "detection_rate": 0.07692307692307693
+        },
+        {
+          "target": 0.1,
+          "false_alarm_rate": 0.10333333333333333,
+          "detection_rate": 0.12087912087912088
+        },
+        {
+          "target": 0.2,
+          "false_alarm_rate": 0.17333333333333334,
+          "detection_rate": 0.21611721611721613
+        },
+        {
+          "target": 0.3,
+          "false_alarm_rate": 0.2866666666666667,
+          "detection_rate": 0.34798534798534797
+        },
+        {
+          "target": 0.5,
+          "false_alarm_rate": 0.53,
+          "detection_rate": 0.5824175824175825
+        }
+      ],
+      "step_change": [
+        {
+          "target": 0.01,
+          "false_alarm_rate": 0.02666666666666667,
+          "detection_rate": 0.029304029304029304
+        },
+        {
+          "target": 0.02,
+          "false_alarm_rate": 0.043333333333333335,
+          "detection_rate": 0.047619047619047616
+        },
+        {
+          "target": 0.05,
+          "false_alarm_rate": 0.06,
+          "detection_rate": 0.06593406593406594
+        },
+        {
+          "target": 0.1,
+          "false_alarm_rate": 0.09666666666666666,
+          "detection_rate": 0.1282051282051282
+        },
+        {
+          "target": 0.2,
+          "false_alarm_rate": 0.18,
+          "detection_rate": 0.23809523809523808
+        },
+        {
+          "target": 0.3,
+          "false_alarm_rate": 0.23333333333333334,
+          "detection_rate": 0.2857142857142857
+        },
+        {
+          "target": 0.5,
+          "false_alarm_rate": 0.42333333333333334,
+          "detection_rate": 0.5128205128205128
+        }
+      ],
+      "spectral_drift": [
+        {
+          "target": 0.01,
+          "false_alarm_rate": 0.0033333333333333335,
+          "detection_rate": 0.018315018315018316
+        },
+        {
+          "target": 0.02,
+          "false_alarm_rate": 0.013333333333333334,
+          "detection_rate": 0.02564102564102564
+        },
+        {
+          "target": 0.05,
+          "false_alarm_rate": 0.043333333333333335,
+          "detection_rate": 0.08791208791208792
+        },
+        {
+          "target": 0.1,
+          "false_alarm_rate": 0.09,
+          "detection_rate": 0.16483516483516483
+        },
+        {
+          "target": 0.2,
+          "false_alarm_rate": 0.17666666666666667,
+          "detection_rate": 0.32967032967032966
+        },
+        {
+          "target": 0.3,
+          "false_alarm_rate": 0.28,
+          "detection_rate": 0.45787545787545786
+        },
+        {
+          "target": 0.5,
+          "false_alarm_rate": 0.49666666666666665,
+          "detection_rate": 0.6410256410256411
+        }
+      ],
+      "pde_residual": [
+        {
+          "target": 0.01,
+          "false_alarm_rate": 0.0033333333333333335,
+          "detection_rate": 0.007326007326007326
+        },
+        {
+          "target": 0.02,
+          "false_alarm_rate": 0.01,
+          "detection_rate": 0.029304029304029304
+        },
+        {
+          "target": 0.05,
+          "false_alarm_rate": 0.023333333333333334,
+          "detection_rate": 0.054945054945054944
+        },
+        {
+          "target": 0.1,
+          "false_alarm_rate": 0.03333333333333333,
+          "detection_rate": 0.09157509157509157
+        },
+        {
+          "target": 0.2,
+          "false_alarm_rate": 0.06666666666666667,
+          "detection_rate": 0.17582417582417584
+        },
+        {
+          "target": 0.3,
+          "false_alarm_rate": 0.09,
+          "detection_rate": 0.2564102564102564
+        },
+        {
+          "target": 0.5,
+          "false_alarm_rate": 0.3,
+          "detection_rate": 0.4432234432234432
+        }
+      ],
+      "clock": [
+        {
+          "target": 0.01,
+          "false_alarm_rate": 0.0,
+          "detection_rate": 0.11721611721611722
+        },
+        {
+          "target": 0.02,
+          "false_alarm_rate": 0.0,
+          "detection_rate": 0.11721611721611722
+        },
+        {
+          "target": 0.05,
+          "false_alarm_rate": 0.0,
+          "detection_rate": 0.11721611721611722
+        },
+        {
+          "target": 0.1,
+          "false_alarm_rate": 0.0,
+          "detection_rate": 0.11721611721611722
+        },
+        {
+          "target": 0.2,
+          "false_alarm_rate": 0.17666666666666667,
+          "detection_rate": 0.37362637362637363
+        },
+        {
+          "target": 0.3,
+          "false_alarm_rate": 0.25333333333333335,
+          "detection_rate": 0.48717948717948717
+        },
+        {
+          "target": 0.5,
+          "false_alarm_rate": 0.5033333333333333,
+          "detection_rate": 0.7912087912087912
+        }
+      ]
+    },
+    "rougher_waves": {
+      "act_norm": [
+        {
+          "target": 0.01,
+          "false_alarm_rate": 0.01,
+          "detection_rate": 0.014336917562724014
+        },
+        {
+          "target": 0.02,
+          "false_alarm_rate": 0.013333333333333334,
+          "detection_rate": 0.025089605734767026
+        },
+        {
+          "target": 0.05,
+          "false_alarm_rate": 0.023333333333333334,
+          "detection_rate": 0.043010752688172046
+        },
+        {
+          "target": 0.1,
+          "false_alarm_rate": 0.06,
+          "detection_rate": 0.07885304659498207
+        },
+        {
+          "target": 0.2,
+          "false_alarm_rate": 0.12333333333333334,
+          "detection_rate": 0.16129032258064516
+        },
+        {
+          "target": 0.3,
+          "false_alarm_rate": 0.23,
+          "detection_rate": 0.2724014336917563
+        },
+        {
+          "target": 0.5,
+          "false_alarm_rate": 0.43666666666666665,
+          "detection_rate": 0.4910394265232975
+        }
+      ],
+      "eff_rank": [
+        {
+          "target": 0.01,
+          "false_alarm_rate": 0.01,
+          "detection_rate": 0.0035842293906810036
+        },
+        {
+          "target": 0.02,
+          "false_alarm_rate": 0.013333333333333334,
+          "detection_rate": 0.007168458781362007
+        },
+        {
+          "target": 0.05,
+          "false_alarm_rate": 0.03666666666666667,
+          "detection_rate": 0.03225806451612903
+        },
+        {
+          "target": 0.1,
+          "false_alarm_rate": 0.056666666666666664,
+          "detection_rate": 0.06810035842293907
+        },
+        {
+          "target": 0.2,
+          "false_alarm_rate": 0.19333333333333333,
+          "detection_rate": 0.22580645161290322
+        },
+        {
+          "target": 0.3,
+          "false_alarm_rate": 0.3,
+          "detection_rate": 0.34050179211469533
+        },
+        {
+          "target": 0.5,
+          "false_alarm_rate": 0.5066666666666667,
+          "detection_rate": 0.5591397849462365
+        }
+      ],
+      "train_dist": [
+        {
+          "target": 0.01,
+          "false_alarm_rate": 0.02,
+          "detection_rate": 0.021505376344086023
+        },
+        {
+          "target": 0.02,
+          "false_alarm_rate": 0.04,
+          "detection_rate": 0.06093189964157706
+        },
+        {
+          "target": 0.05,
+          "false_alarm_rate": 0.07,
+          "detection_rate": 0.08960573476702509
+        },
+        {
+          "target": 0.1,
+          "false_alarm_rate": 0.17666666666666667,
+          "detection_rate": 0.2114695340501792
+        },
+        {
+          "target": 0.2,
+          "false_alarm_rate": 0.2833333333333333,
+          "detection_rate": 0.32974910394265233
+        },
+        {
+          "target": 0.3,
+          "false_alarm_rate": 0.36666666666666664,
+          "detection_rate": 0.4229390681003584
+        },
+        {
+          "target": 0.5,
+          "false_alarm_rate": 0.5866666666666667,
+          "detection_rate": 0.6523297491039427
+        }
+      ],
+      "step_change": [
+        {
+          "target": 0.01,
+          "false_alarm_rate": 0.03666666666666667,
+          "detection_rate": 0.043010752688172046
+        },
+        {
+          "target": 0.02,
+          "false_alarm_rate": 0.04,
+          "detection_rate": 0.05017921146953405
+        },
+        {
+          "target": 0.05,
+          "false_alarm_rate": 0.07333333333333333,
+          "detection_rate": 0.08602150537634409
+        },
+        {
+          "target": 0.1,
+          "false_alarm_rate": 0.14333333333333334,
+          "detection_rate": 0.21863799283154123
+        },
+        {
+          "target": 0.2,
+          "false_alarm_rate": 0.24,
+          "detection_rate": 0.35842293906810035
+        },
+        {
+          "target": 0.3,
+          "false_alarm_rate": 0.32,
+          "detection_rate": 0.43727598566308246
+        },
+        {
+          "target": 0.5,
+          "false_alarm_rate": 0.5333333333333333,
+          "detection_rate": 0.6845878136200717
+        }
+      ],
+      "spectral_drift": [
+        {
+          "target": 0.01,
+          "false_alarm_rate": 0.01,
+          "detection_rate": 0.025089605734767026
+        },
+        {
+          "target": 0.02,
+          "false_alarm_rate": 0.01,
+          "detection_rate": 0.03225806451612903
+        },
+        {
+          "target": 0.05,
+          "false_alarm_rate": 0.04,
+          "detection_rate": 0.08960573476702509
+        },
+        {
+          "target": 0.1,
+          "false_alarm_rate": 0.1,
+          "detection_rate": 0.1935483870967742
+        },
+        {
+          "target": 0.2,
+          "false_alarm_rate": 0.24333333333333335,
+          "detection_rate": 0.4121863799283154
+        },
+        {
+          "target": 0.3,
+          "false_alarm_rate": 0.3566666666666667,
+          "detection_rate": 0.5519713261648745
+        },
+        {
+          "target": 0.5,
+          "false_alarm_rate": 0.5066666666666667,
+          "detection_rate": 0.6810035842293907
+        }
+      ],
+      "pde_residual": [
+        {
+          "target": 0.01,
+          "false_alarm_rate": 0.016666666666666666,
+          "detection_rate": 0.035842293906810034
+        },
+        {
+          "target": 0.02,
+          "false_alarm_rate": 0.03666666666666667,
+          "detection_rate": 0.05734767025089606
+        },
+        {
+          "target": 0.05,
+          "false_alarm_rate": 0.043333333333333335,
+          "detection_rate": 0.11469534050179211
+        },
+        {
+          "target": 0.1,
+          "false_alarm_rate": 0.10666666666666667,
+          "detection_rate": 0.1827956989247312
+        },
+        {
+          "target": 0.2,
+          "false_alarm_rate": 0.18333333333333332,
+          "detection_rate": 0.3154121863799283
+        },
+        {
+          "target": 0.3,
+          "false_alarm_rate": 0.27,
+          "detection_rate": 0.4336917562724014
+        },
+        {
+          "target": 0.5,
+          "false_alarm_rate": 0.5566666666666666,
+          "detection_rate": 0.6774193548387096
+        }
+      ],
+      "clock": [
+        {
+          "target": 0.01,
+          "false_alarm_rate": 0.0,
+          "detection_rate": 0.04659498207885305
+        },
+        {
+          "target": 0.02,
+          "false_alarm_rate": 0.0,
+          "detection_rate": 0.04659498207885305
+        },
+        {
+          "target": 0.05,
+          "false_alarm_rate": 0.0,
+          "detection_rate": 0.04659498207885305
+        },
+        {
+          "target": 0.1,
+          "false_alarm_rate": 0.0,
+          "detection_rate": 0.04659498207885305
+        },
+        {
+          "target": 0.2,
+          "false_alarm_rate": 0.11333333333333333,
+          "detection_rate": 0.20430107526881722
+        },
+        {
+          "target": 0.3,
+          "false_alarm_rate": 0.14333333333333334,
+          "detection_rate": 0.3154121863799283
+        },
+        {
+          "target": 0.5,
+          "false_alarm_rate": 0.33666666666666667,
+          "detection_rate": 0.6379928315412187
+        }
+      ]
+    }
+  },
+  "sweep": {
+    "0.02": {
+      "control": {
+        "supported": false,
+        "failing_share": 1.0,
+        "lead_time_median": {
+          "act_norm": -189.0,
+          "eff_rank": -184.0,
+          "train_dist": -185.0,
+          "step_change": -84.5,
+          "spectral_drift": -47.5,
+          "pde_residual": -60.0,
+          "clock": -4.0
+        },
+        "detection_rate": {
+          "act_norm": 0.06666666666666667,
+          "eff_rank": 0.07,
+          "train_dist": 0.05,
+          "step_change": 0.06,
+          "spectral_drift": 0.12,
+          "pde_residual": 0.18666666666666668,
+          "clock": 0.23333333333333334
+        },
+        "false_alarm_rate": {
+          "act_norm": 0.06,
+          "eff_rank": 0.056666666666666664,
+          "train_dist": 0.043333333333333335,
+          "step_change": 0.03333333333333333,
+          "spectral_drift": 0.04,
+          "pde_residual": 0.05,
+          "clock": 0.06333333333333334
+        }
+      },
+      "viscosity_up": {
+        "supported": false,
+        "failing_share": 1.0,
+        "lead_time_median": {
+          "act_norm": -193.0,
+          "eff_rank": -182.5,
+          "train_dist": -190.0,
+          "step_change": -82.0,
+          "spectral_drift": -41.5,
+          "pde_residual": 3.0,
+          "clock": -6.0
+        },
+        "detection_rate": {
+          "act_norm": 0.03666666666666667,
+          "eff_rank": 0.04,
+          "train_dist": 0.07666666666666666,
+          "step_change": 0.03666666666666667,
+          "spectral_drift": 0.08666666666666667,
+          "pde_residual": 0.89,
+          "clock": 0.1
+        },
+        "false_alarm_rate": {
+          "act_norm": 0.03666666666666667,
+          "eff_rank": 0.02666666666666667,
+          "train_dist": 0.07,
+          "step_change": 0.013333333333333334,
+          "spectral_drift": 0.03666666666666667,
+          "pde_residual": 0.6266666666666667,
+          "clock": 0.01
+        }
+      },
+      "viscosity_down": {
+        "supported": false,
+        "failing_share": 1.0,
+        "lead_time_median": {
+          "act_norm": -190.5,
+          "eff_rank": -152.5,
+          "train_dist": -185.0,
+          "step_change": -88.5,
+          "spectral_drift": -42.0,
+          "pde_residual": -69.0,
+          "clock": -5.0
+        },
+        "detection_rate": {
+          "act_norm": 0.04666666666666667,
+          "eff_rank": 0.08666666666666667,
+          "train_dist": 0.04,
+          "step_change": 0.07666666666666666,
+          "spectral_drift": 0.09666666666666666,
+          "pde_residual": 0.06666666666666667,
+          "clock": 0.20666666666666667
+        },
+        "false_alarm_rate": {
+          "act_norm": 0.043333333333333335,
+          "eff_rank": 0.07666666666666666,
+          "train_dist": 0.03666666666666667,
+          "step_change": 0.06,
+          "spectral_drift": 0.03333333333333333,
+          "pde_residual": 0.043333333333333335,
+          "clock": 0.056666666666666664
+        }
+      },
+      "rougher_waves": {
+        "supported": false,
+        "failing_share": 1.0,
+        "lead_time_median": {
+          "act_norm": -194.0,
+          "eff_rank": -184.0,
+          "train_dist": -181.5,
+          "step_change": -61.0,
+          "spectral_drift": -25.5,
+          "pde_residual": -14.0,
+          "clock": -7.0
+        },
+        "detection_rate": {
+          "act_norm": 0.03666666666666667,
+          "eff_rank": 0.023333333333333334,
+          "train_dist": 0.10666666666666667,
+          "step_change": 0.06333333333333334,
+          "spectral_drift": 0.09,
+          "pde_residual": 0.15666666666666668,
+          "clock": 0.06
+        },
+        "false_alarm_rate": {
+          "act_norm": 0.03666666666666667,
+          "eff_rank": 0.0033333333333333335,
+          "train_dist": 0.07666666666666666,
+          "step_change": 0.006666666666666667,
+          "spectral_drift": 0.023333333333333334,
+          "pde_residual": 0.04666666666666667,
+          "clock": 0.0
+        }
+      },
+      "overall_supported": false
+    },
+    "0.05": {
+      "control": {
+        "supported": false,
+        "failing_share": 0.9933333333333333,
+        "lead_time_median": {
+          "act_norm": -160.0,
+          "eff_rank": -154.5,
+          "train_dist": -153.0,
+          "step_change": -143.0,
+          "spectral_drift": -57.0,
+          "pde_residual": -96.5,
+          "clock": -27.0
+        },
+        "detection_rate": {
+          "act_norm": 0.0738255033557047,
+          "eff_rank": 0.06711409395973154,
+          "train_dist": 0.026845637583892617,
+          "step_change": 0.06040268456375839,
+          "spectral_drift": 0.087248322147651,
+          "pde_residual": 0.12080536912751678,
+          "clock": 0.19798657718120805
+        },
+        "false_alarm_rate": {
+          "act_norm": 0.06,
+          "eff_rank": 0.05333333333333334,
+          "train_dist": 0.02666666666666667,
+          "step_change": 0.04666666666666667,
+          "spectral_drift": 0.05333333333333334,
+          "pde_residual": 0.06666666666666667,
+          "clock": 0.05333333333333334
+        }
+      },
+      "viscosity_up": {
+        "supported": false,
+        "failing_share": 1.0,
+        "lead_time_median": {
+          "act_norm": -180.0,
+          "eff_rank": -177.0,
+          "train_dist": -176.0,
+          "step_change": -173.5,
+          "spectral_drift": -57.0,
+          "pde_residual": 9.0,
+          "clock": -36.0
+        },
+        "detection_rate": {
+          "act_norm": 0.03,
+          "eff_rank": 0.05,
+          "train_dist": 0.043333333333333335,
+          "step_change": 0.04666666666666667,
+          "spectral_drift": 0.06,
+          "pde_residual": 0.8766666666666667,
+          "clock": 0.03
+        },
+        "false_alarm_rate": {
+          "act_norm": 0.02666666666666667,
+          "eff_rank": 0.04,
+          "train_dist": 0.043333333333333335,
+          "step_change": 0.043333333333333335,
+          "spectral_drift": 0.043333333333333335,
+          "pde_residual": 0.82,
+          "clock": 0.0
+        }
+      },
+      "viscosity_down": {
+        "supported": false,
+        "failing_share": 0.9966666666666667,
+        "lead_time_median": {
+          "act_norm": -170.0,
+          "eff_rank": -163.0,
+          "train_dist": -164.0,
+          "step_change": -160.0,
+          "spectral_drift": -70.0,
+          "pde_residual": -94.0,
+          "clock": -33.0
+        },
+        "detection_rate": {
+          "act_norm": 0.06354515050167224,
+          "eff_rank": 0.11705685618729098,
+          "train_dist": 0.06020066889632107,
+          "step_change": 0.07357859531772576,
+          "spectral_drift": 0.08695652173913043,
+          "pde_residual": 0.04013377926421405,
+          "clock": 0.1505016722408027
+        },
+        "false_alarm_rate": {
+          "act_norm": 0.043333333333333335,
+          "eff_rank": 0.09666666666666666,
+          "train_dist": 0.05,
+          "step_change": 0.056666666666666664,
+          "spectral_drift": 0.04,
+          "pde_residual": 0.01,
+          "clock": 0.016666666666666666
+        }
+      },
+      "rougher_waves": {
+        "supported": false,
+        "failing_share": 0.9966666666666667,
+        "lead_time_median": {
+          "act_norm": -181.0,
+          "eff_rank": -176.0,
+          "train_dist": -170.0,
+          "step_change": -170.0,
+          "spectral_drift": -58.0,
+          "pde_residual": -139.0,
+          "clock": -38.0
+        },
+        "detection_rate": {
+          "act_norm": 0.03678929765886288,
+          "eff_rank": 0.05016722408026756,
+          "train_dist": 0.07023411371237458,
+          "step_change": 0.09364548494983277,
+          "spectral_drift": 0.12040133779264214,
+          "pde_residual": 0.13377926421404682,
+          "clock": 0.043478260869565216
+        },
+        "false_alarm_rate": {
+          "act_norm": 0.03,
+          "eff_rank": 0.043333333333333335,
+          "train_dist": 0.06333333333333334,
+          "step_change": 0.08,
+          "spectral_drift": 0.07333333333333333,
+          "pde_residual": 0.06333333333333334,
+          "clock": 0.013333333333333334
+        }
+      },
+      "overall_supported": false
+    },
+    "0.1": {
+      "control": {
+        "supported": false,
+        "failing_share": 0.8533333333333334,
+        "lead_time_median": {
+          "act_norm": -112.5,
+          "eff_rank": -103.0,
+          "train_dist": -97.5,
+          "step_change": -99.5,
+          "spectral_drift": -35.5,
+          "pde_residual": -82.5,
+          "clock": -47.5
+        },
+        "detection_rate": {
+          "act_norm": 0.09765625,
+          "eff_rank": 0.0546875,
+          "train_dist": 0.02734375,
+          "step_change": 0.05859375,
+          "spectral_drift": 0.1171875,
+          "pde_residual": 0.13671875,
+          "clock": 0.171875
+        },
+        "false_alarm_rate": {
+          "act_norm": 0.06,
+          "eff_rank": 0.05333333333333334,
+          "train_dist": 0.023333333333333334,
+          "step_change": 0.02666666666666667,
+          "spectral_drift": 0.04,
+          "pde_residual": 0.06666666666666667,
+          "clock": 0.0
+        }
+      },
+      "viscosity_up": {
+        "supported": false,
+        "failing_share": 0.9833333333333333,
+        "lead_time_median": {
+          "act_norm": -156.0,
+          "eff_rank": -153.0,
+          "train_dist": -149.0,
+          "step_change": -149.0,
+          "spectral_drift": -62.0,
+          "pde_residual": 18.0,
+          "clock": -70.0
+        },
+        "detection_rate": {
+          "act_norm": 0.02711864406779661,
+          "eff_rank": 0.030508474576271188,
+          "train_dist": 0.05423728813559322,
+          "step_change": 0.04745762711864407,
+          "spectral_drift": 0.06440677966101695,
+          "pde_residual": 0.8271186440677966,
+          "clock": 0.04067796610169491
+        },
+        "false_alarm_rate": {
+          "act_norm": 0.023333333333333334,
+          "eff_rank": 0.023333333333333334,
+          "train_dist": 0.043333333333333335,
+          "step_change": 0.043333333333333335,
+          "spectral_drift": 0.03666666666666667,
+          "pde_residual": 0.7566666666666667,
+          "clock": 0.0
+        }
+      },
+      "viscosity_down": {
+        "supported": false,
+        "failing_share": 0.91,
+        "lead_time_median": {
+          "act_norm": -129.0,
+          "eff_rank": -121.0,
+          "train_dist": -120.0,
+          "step_change": -122.0,
+          "spectral_drift": -58.0,
+          "pde_residual": -86.0,
+          "clock": -60.0
+        },
+        "detection_rate": {
+          "act_norm": 0.08424908424908426,
+          "eff_rank": 0.08791208791208792,
+          "train_dist": 0.07692307692307693,
+          "step_change": 0.06593406593406594,
+          "spectral_drift": 0.08791208791208792,
+          "pde_residual": 0.054945054945054944,
+          "clock": 0.11721611721611722
+        },
+        "false_alarm_rate": {
+          "act_norm": 0.04666666666666667,
+          "eff_rank": 0.10666666666666667,
+          "train_dist": 0.06333333333333334,
+          "step_change": 0.06,
+          "spectral_drift": 0.043333333333333335,
+          "pde_residual": 0.023333333333333334,
+          "clock": 0.0
+        }
+      },
+      "rougher_waves": {
+        "supported": false,
+        "failing_share": 0.93,
+        "lead_time_median": {
+          "act_norm": -155.0,
+          "eff_rank": -150.0,
+          "train_dist": -126.0,
+          "step_change": -144.0,
+          "spectral_drift": -102.0,
+          "pde_residual": -136.0,
+          "clock": -70.0
+        },
+        "detection_rate": {
+          "act_norm": 0.043010752688172046,
+          "eff_rank": 0.03225806451612903,
+          "train_dist": 0.08960573476702509,
+          "step_change": 0.08602150537634409,
+          "spectral_drift": 0.08960573476702509,
+          "pde_residual": 0.11469534050179211,
+          "clock": 0.04659498207885305
+        },
+        "false_alarm_rate": {
+          "act_norm": 0.023333333333333334,
+          "eff_rank": 0.03666666666666667,
+          "train_dist": 0.07,
+          "step_change": 0.07333333333333333,
+          "spectral_drift": 0.04,
+          "pde_residual": 0.043333333333333335,
+          "clock": 0.0
+        }
+      },
+      "overall_supported": false
+    },
+    "0.2": {
+      "control": {
+        "supported": false,
+        "failing_share": 0.5566666666666666,
+        "lead_time_median": {
+          "act_norm": -52.0,
+          "eff_rank": -31.0,
+          "train_dist": -38.0,
+          "step_change": -31.0,
+          "spectral_drift": -12.0,
+          "pde_residual": -22.0,
+          "clock": -25.0
+        },
+        "detection_rate": {
+          "act_norm": 0.16766467065868262,
+          "eff_rank": 0.0718562874251497,
+          "train_dist": 0.0658682634730539,
+          "step_change": 0.2275449101796407,
+          "spectral_drift": 0.20359281437125748,
+          "pde_residual": 0.24550898203592814,
+          "clock": 0.2874251497005988
+        },
+        "false_alarm_rate": {
+          "act_norm": 0.06666666666666667,
+          "eff_rank": 0.06,
+          "train_dist": 0.023333333333333334,
+          "step_change": 0.03,
+          "spectral_drift": 0.05333333333333334,
+          "pde_residual": 0.05333333333333334,
+          "clock": 0.0
+        }
+      },
+      "viscosity_up": {
+        "supported": false,
+        "failing_share": 0.73,
+        "lead_time_median": {
+          "act_norm": -102.0,
+          "eff_rank": -91.0,
+          "train_dist": -80.0,
+          "step_change": -86.0,
+          "spectral_drift": -31.0,
+          "pde_residual": 39.0,
+          "clock": -37.0
+        },
+        "detection_rate": {
+          "act_norm": 0.0365296803652968,
+          "eff_rank": 0.0365296803652968,
+          "train_dist": 0.0593607305936073,
+          "step_change": 0.091324200913242,
+          "spectral_drift": 0.1872146118721461,
+          "pde_residual": 0.863013698630137,
+          "clock": 0.2191780821917808
+        },
+        "false_alarm_rate": {
+          "act_norm": 0.02666666666666667,
+          "eff_rank": 0.02666666666666667,
+          "train_dist": 0.04666666666666667,
+          "step_change": 0.03666666666666667,
+          "spectral_drift": 0.09333333333333334,
+          "pde_residual": 0.7466666666666667,
+          "clock": 0.0
+        }
+      },
+      "viscosity_down": {
+        "supported": false,
+        "failing_share": 0.65,
+        "lead_time_median": {
+          "act_norm": -59.0,
+          "eff_rank": -46.0,
+          "train_dist": -46.0,
+          "step_change": -42.0,
+          "spectral_drift": -23.0,
+          "pde_residual": -45.0,
+          "clock": -30.0
+        },
+        "detection_rate": {
+          "act_norm": 0.15384615384615385,
+          "eff_rank": 0.07692307692307693,
+          "train_dist": 0.11282051282051282,
+          "step_change": 0.2153846153846154,
+          "spectral_drift": 0.20512820512820512,
+          "pde_residual": 0.1076923076923077,
+          "clock": 0.3333333333333333
+        },
+        "false_alarm_rate": {
+          "act_norm": 0.04666666666666667,
+          "eff_rank": 0.1,
+          "train_dist": 0.07,
+          "step_change": 0.056666666666666664,
+          "spectral_drift": 0.02666666666666667,
+          "pde_residual": 0.013333333333333334,
+          "clock": 0.0
+        }
+      },
+      "rougher_waves": {
+        "supported": false,
+        "failing_share": 0.7266666666666667,
+        "lead_time_median": {
+          "act_norm": -111.0,
+          "eff_rank": -93.5,
+          "train_dist": -64.0,
+          "step_change": -85.0,
+          "spectral_drift": -73.5,
+          "pde_residual": -95.0,
+          "clock": -44.0
+        },
+        "detection_rate": {
+          "act_norm": 0.07339449541284404,
+          "eff_rank": 0.03669724770642202,
+          "train_dist": 0.13761467889908258,
+          "step_change": 0.14678899082568808,
+          "spectral_drift": 0.10550458715596331,
+          "pde_residual": 0.12385321100917432,
+          "clock": 0.1834862385321101
+        },
+        "false_alarm_rate": {
+          "act_norm": 0.03666666666666667,
+          "eff_rank": 0.03666666666666667,
+          "train_dist": 0.09666666666666666,
+          "step_change": 0.06333333333333334,
+          "spectral_drift": 0.03666666666666667,
+          "pde_residual": 0.04666666666666667,
+          "clock": 0.0
+        }
+      },
+      "overall_supported": false
+    },
+    "0.5": {
+      "control": {
+        "supported": false,
+        "failing_share": 0.3233333333333333,
+        "lead_time_median": {
+          "act_norm": -1.0,
+          "eff_rank": 1.0,
+          "train_dist": -7.0,
+          "step_change": 7.0,
+          "spectral_drift": 4.0,
+          "pde_residual": -1.0,
+          "clock": -5.0
+        },
+        "detection_rate": {
+          "act_norm": 0.4639175257731959,
+          "eff_rank": 0.5463917525773195,
+          "train_dist": 0.061855670103092786,
+          "step_change": 0.7628865979381443,
+          "spectral_drift": 0.7628865979381443,
+          "pde_residual": 0.4742268041237113,
+          "clock": 0.41237113402061853
+        },
+        "false_alarm_rate": {
+          "act_norm": 0.06666666666666667,
+          "eff_rank": 0.05,
+          "train_dist": 0.023333333333333334,
+          "step_change": 0.03,
+          "spectral_drift": 0.056666666666666664,
+          "pde_residual": 0.06,
+          "clock": 0.0
+        }
+      },
+      "viscosity_up": {
+        "supported": false,
+        "failing_share": 0.32666666666666666,
+        "lead_time_median": {
+          "act_norm": -8.0,
+          "eff_rank": 1.0,
+          "train_dist": -8.0,
+          "step_change": 6.0,
+          "spectral_drift": 3.0,
+          "pde_residual": 55.0,
+          "clock": -10.0
+        },
+        "detection_rate": {
+          "act_norm": 0.21428571428571427,
+          "eff_rank": 0.5408163265306123,
+          "train_dist": 0.1326530612244898,
+          "step_change": 0.6938775510204082,
+          "spectral_drift": 0.6836734693877551,
+          "pde_residual": 0.9081632653061225,
+          "clock": 0.3877551020408163
+        },
+        "false_alarm_rate": {
+          "act_norm": 0.023333333333333334,
+          "eff_rank": 0.02666666666666667,
+          "train_dist": 0.056666666666666664,
+          "step_change": 0.043333333333333335,
+          "spectral_drift": 0.11666666666666667,
+          "pde_residual": 0.73,
+          "clock": 0.0
+        }
+      },
+      "viscosity_down": {
+        "supported": false,
+        "failing_share": 0.34,
+        "lead_time_median": {
+          "act_norm": -2.0,
+          "eff_rank": 2.0,
+          "train_dist": -6.0,
+          "step_change": 8.0,
+          "spectral_drift": 3.5,
+          "pde_residual": -5.0,
+          "clock": -10.0
+        },
+        "detection_rate": {
+          "act_norm": 0.3431372549019608,
+          "eff_rank": 0.5588235294117647,
+          "train_dist": 0.13725490196078433,
+          "step_change": 0.7941176470588235,
+          "spectral_drift": 0.6764705882352942,
+          "pde_residual": 0.28431372549019607,
+          "clock": 0.38235294117647056
+        },
+        "false_alarm_rate": {
+          "act_norm": 0.04666666666666667,
+          "eff_rank": 0.09,
+          "train_dist": 0.06,
+          "step_change": 0.05333333333333334,
+          "spectral_drift": 0.03666666666666667,
+          "pde_residual": 0.04666666666666667,
+          "clock": 0.0
+        }
+      },
+      "rougher_waves": {
+        "supported": false,
+        "failing_share": 0.3566666666666667,
+        "lead_time_median": {
+          "act_norm": -10.0,
+          "eff_rank": -1.0,
+          "train_dist": -6.0,
+          "step_change": 5.0,
+          "spectral_drift": 1.0,
+          "pde_residual": -7.0,
+          "clock": -9.0
+        },
+        "detection_rate": {
+          "act_norm": 0.21495327102803738,
+          "eff_rank": 0.4766355140186916,
+          "train_dist": 0.2336448598130841,
+          "step_change": 0.6448598130841121,
+          "spectral_drift": 0.514018691588785,
+          "pde_residual": 0.3644859813084112,
+          "clock": 0.4205607476635514
+        },
+        "false_alarm_rate": {
+          "act_norm": 0.03666666666666667,
+          "eff_rank": 0.03666666666666667,
+          "train_dist": 0.09666666666666666,
+          "step_change": 0.06666666666666667,
+          "spectral_drift": 0.05333333333333334,
+          "pde_residual": 0.05,
+          "clock": 0.0
+        }
+      },
+      "overall_supported": false
+    },
+    "1.0": {
+      "control": {
+        "supported": false,
+        "failing_share": 0.2633333333333333,
+        "lead_time_median": {
+          "act_norm": 7.0,
+          "eff_rank": 7.0,
+          "train_dist": -1.0,
+          "step_change": 13.0,
+          "spectral_drift": 10.0,
+          "pde_residual": 6.0,
+          "clock": -7.0
+        },
+        "detection_rate": {
+          "act_norm": 0.8607594936708861,
+          "eff_rank": 0.8987341772151899,
+          "train_dist": 0.189873417721519,
+          "step_change": 1.0,
+          "spectral_drift": 1.0,
+          "pde_residual": 0.6835443037974683,
+          "clock": 0.379746835443038
+        },
+        "false_alarm_rate": {
+          "act_norm": 0.07,
+          "eff_rank": 0.05,
+          "train_dist": 0.02,
+          "step_change": 0.02666666666666667,
+          "spectral_drift": 0.04666666666666667,
+          "pde_residual": 0.06666666666666667,
+          "clock": 0.0
+        }
+      },
+      "viscosity_up": {
+        "supported": false,
+        "failing_share": 0.24333333333333335,
+        "lead_time_median": {
+          "act_norm": 2.0,
+          "eff_rank": 10.0,
+          "train_dist": -1.0,
+          "step_change": 14.0,
+          "spectral_drift": 12.0,
+          "pde_residual": 46.0,
+          "clock": -6.0
+        },
+        "detection_rate": {
+          "act_norm": 0.726027397260274,
+          "eff_rank": 0.9863013698630136,
+          "train_dist": 0.2191780821917808,
+          "step_change": 0.9863013698630136,
+          "spectral_drift": 0.9863013698630136,
+          "pde_residual": 0.9178082191780822,
+          "clock": 0.410958904109589
+        },
+        "false_alarm_rate": {
+          "act_norm": 0.023333333333333334,
+          "eff_rank": 0.03,
+          "train_dist": 0.043333333333333335,
+          "step_change": 0.04,
+          "spectral_drift": 0.11333333333333333,
+          "pde_residual": 0.72,
+          "clock": 0.0
+        }
+      },
+      "viscosity_down": {
+        "supported": false,
+        "failing_share": 0.26,
+        "lead_time_median": {
+          "act_norm": 5.0,
+          "eff_rank": 9.0,
+          "train_dist": -1.0,
+          "step_change": 14.0,
+          "spectral_drift": 9.0,
+          "pde_residual": 1.0,
+          "clock": -3.5
+        },
+        "detection_rate": {
+          "act_norm": 0.8205128205128205,
+          "eff_rank": 0.9487179487179487,
+          "train_dist": 0.2564102564102564,
+          "step_change": 0.9743589743589743,
+          "spectral_drift": 0.9615384615384616,
+          "pde_residual": 0.5256410256410257,
+          "clock": 0.4358974358974359
+        },
+        "false_alarm_rate": {
+          "act_norm": 0.04666666666666667,
+          "eff_rank": 0.09333333333333334,
+          "train_dist": 0.05333333333333334,
+          "step_change": 0.056666666666666664,
+          "spectral_drift": 0.043333333333333335,
+          "pde_residual": 0.05,
+          "clock": 0.0
+        }
+      },
+      "rougher_waves": {
+        "supported": false,
+        "failing_share": 0.21,
+        "lead_time_median": {
+          "act_norm": 3.0,
+          "eff_rank": 9.0,
+          "train_dist": -1.0,
+          "step_change": 12.0,
+          "spectral_drift": 9.0,
+          "pde_residual": 5.0,
+          "clock": -7.0
+        },
+        "detection_rate": {
+          "act_norm": 0.7142857142857143,
+          "eff_rank": 0.9841269841269841,
+          "train_dist": 0.2698412698412698,
+          "step_change": 1.0,
+          "spectral_drift": 0.9841269841269841,
+          "pde_residual": 0.6349206349206349,
+          "clock": 0.3968253968253968
+        },
+        "false_alarm_rate": {
+          "act_norm": 0.03666666666666667,
+          "eff_rank": 0.043333333333333335,
+          "train_dist": 0.10333333333333333,
+          "step_change": 0.07333333333333333,
+          "spectral_drift": 0.04666666666666667,
+          "pde_residual": 0.03666666666666667,
+          "clock": 0.0
+        }
+      },
+      "overall_supported": false
+    }
+  }
+}
