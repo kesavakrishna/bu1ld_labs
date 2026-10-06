@@ -1,8 +1,8 @@
 # PDE Early-Warning Harness
 
 Do a neural surrogate's internal activations warn that a rollout is about to fail, earlier than simple checks on its output, including when the physics shifts away from what it was trained on?
-**Headline result:** not yet available. The evaluation is frozen (see [FREEZE.md](FREEZE.md)) and nothing has been scored.
-The full plan, in plain English, is in [PROJECT_PLAN.md](PROJECT_PLAN.md).
+**Headline result: no (a null result).** In a pre-registered test across four settings, no internal signal beat the output-only baselines, and none beat a fixed rollout-length limit. Simple output checks did warn of outright blow-ups. See [MEMO.md](MEMO.md).
+The evaluation was frozen before scoring ([FREEZE.md](FREEZE.md)); the plan, in plain English, is in [PROJECT_PLAN.md](PROJECT_PLAN.md).
 
 ## Reproduce everything
 
