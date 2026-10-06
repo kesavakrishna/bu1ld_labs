@@ -3,6 +3,19 @@
 Kesava · BU1LD Fall 2026 Research Labs, thread 05 · 2026-10-05
 Repo: https://github.com/kesavakrishna/bu1ld_labs · evaluation reference `freeze-v2` (`de54e3c`, unchanged) · results committed on top at `09ab581`
 
+> **Correction, 2026-10-06 (documentation only).** Added after review. The memo below is unchanged from `2e7b9a1`, and nothing in the frozen protocol, code or scored outputs has changed.
+>
+> **1. Two sentences in "What this means" overstate the result.**
+> - *"The internal signals carried no information the output didn't already carry, so white-box access bought nothing here."* The supported statement is narrower: **the tested internal signals did not satisfy the frozen superiority rule against the tested output-only baselines, in these four settings.** Failing to beat those baselines does not establish that the activations contain no additional information.
+> - *"How long the rollout has run was the best available predictor of failure."* Should read: among the alarms tested, the fixed-step clock was competitive with, or better than, every signal.
+>
+> **2. The suggested horizon limit plus step-change tripwire is not a certified safety guarantee.** It is a practical heuristic suggested by these results, for this surrogate and these settings.
+>
+> **The scoped result to carry forward:**
+> - **Gradual drift** (10% error) was not usefully anticipated by the tested internal statistics.
+> - **Under viscosity up, the PDE residual** mostly detected the model/physics mismatch, and paid for it with a **76% false-alarm rate**.
+> - **Outright blow-ups** were much easier to detect, and simple output-side changes were strongest.
+
 ## Decision
 
 **Don't invest further in activation-statistic early-warning detectors of this kind.** Under the frozen decision rule, the internal signals were not supported in any of the four settings. None of them warned of rollout failure earlier than simple output-only checks, and none beat a fixed rollout-length limit. For practical safety, use a **rollout horizon limit** plus an **output-side step-change tripwire**. Both are cheap and need no access to the model's internals.
