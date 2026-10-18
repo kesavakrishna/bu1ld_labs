@@ -1,5 +1,5 @@
 """
-The five warning signals, and how each one becomes a score (Day 4).
+The six warning signals, and how each one becomes a score (Day 4).
 
 Every signal is measured during a single model call, from three things: the wave that
 goes in, the wave that comes out, and the activations captured inside the network.

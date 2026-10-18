@@ -10,7 +10,8 @@ Ideas for a second month. Nothing here was run for the week-1 result; see [FREEZ
 
 ## Ideas that came up along the way
 
-- **Compare each rollout against its own start, not the population.** Scores currently measure distance from the normal range of *all* trajectories at that step, which is wide. A rollout can drift a long way from its own truth and still look normal. Measuring change relative to each rollout's own first few steps might be far more sensitive. It needs no ground truth.
+- **Compare each rollout against its own start, not the population.** Scores currently measure distance from the normal range of *all* trajectories at that step, which is wide. A rollout can drift a long way from its own truth and still look normal. Measuring change relative to each rollout's own first few steps might be far more sensitive. It needs no ground truth. Now drafted as [SUCCESSOR_PROTOCOL.md](SUCCESSOR_PROTOCOL.md) (not run).
+- **Adaptive thresholds.** The successor protocol ([SUCCESSOR_PROTOCOL.md](SUCCESSOR_PROTOCOL.md)) already centres each rollout's alarm band on its own first 10 steps. A further step would let that normal level keep updating as the rollout goes on. The catch is that it would also adapt to slow drift, the failure nobody warned about, so it would need its own test after the successor protocol, not alongside it.
 - **Other hook layers.** Read layers 1, 2 and 4 as well as 3, to see whether any depth carries an earlier signal.
 - **Signals aimed at blow-ups.** On dev, output-side signals spiked only after the 10% line, as rollouts began to blow up. Predicting blow-up, rather than 10% error, may be the more natural target.
 - **Harder or longer-lived physics.** Decaying Burgers' dissipates errors, so most rollouts drift to a plateau. A forced Burgers' equation would keep shocks forming for the whole rollout.
