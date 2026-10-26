@@ -1,0 +1,14 @@
+# Successor protocol (SUCCESSOR_PROTOCOL.md, Amendment 1). DRAFT: not frozen, not run.
+# Anything not listed here is unchanged from configs/full.yaml (freeze-v2).
+
+warmup_steps: 10  # steps 1..10 are only watched; an alarm can first fire at step 11
+
+# Fresh test data (protocol §4), with each setting's physics as in freeze-v2. Generated only
+# after freeze-s1 is agreed; nothing reads this section yet.
+fresh_data:
+  n_trajectories: 100
+  settings:
+    control:        {first_id: 1700, seed: 20261017}
+    viscosity_up:   {first_id: 1800, seed: 2001}
+    viscosity_down: {first_id: 1900, seed: 2002}
+    rougher_waves:  {first_id: 2000, seed: 2003}

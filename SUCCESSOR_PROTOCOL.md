@@ -95,3 +95,47 @@ Written down before any result, so none of them can be raised afterwards as an e
 4. Only then is the fresh data generated, and the run done once.
 
 **Compute:** no training. About 400 new trajectories, plus rollouts with the three existing models: well under an hour on the RTX 4060.
+
+---
+
+## Amendment 1 (2026-10-21), after review
+
+Everything above this line is the draft reviewed at `c89f8b5`, left unchanged. Where this amendment differs from it, the amendment applies. Still not frozen and not run.
+
+### A1. False-alarm rate (replaces the hypothesis wording in §1)
+
+> **Hypothesis.** When every signal is scored against its own rollout's first 10 steps, with thresholds calibrated to a 5% false-alarm rate on the in-distribution calibration split (IDs 1000–1199), at least one internal signal warns of failure earlier than every output-only signal.
+
+- Thresholds are recomputed from the own-scores on the calibration split only, with the freeze-v2 `tune_threshold`, unchanged.
+- The 5% target holds on calibration only. The false-alarm rate achieved in each setting is a result, reported separately, as in freeze-v2.
+- No threshold, window or rule is chosen from fresh test outcomes.
+
+### A2. Scope of the conclusion (replaces "What a yes would mean" in §5)
+
+A yes means only this: under own-normal scoring and the frozen rule, at least one internal signal gave earlier warning than every output-only signal. It is not evidence that population scoring hid information. Any statement about what the scoring change did comes only from the paired own-vs-population analysis, reported as secondary.
+
+### A3. Warm-up, non-finite values and alarms (makes §3 exact)
+
+For each signal and rollout, with warm-up length `W = 10` and horizon `H`:
+
+1. `z(t) = (s(t) − μ(t)) / σ(t)`, signed, as in §3.
+2. Baseline `b = mean of z(t)` over `t = 1..10`. If any of those values is non-finite, `b` is non-finite.
+3. For `t > 10`: `own_score(t) = |z(t) − b|`. A non-finite result, including one caused by a non-finite `b`, becomes `+∞`.
+4. For `t ≤ 10`: `own_score(t) = 0`, whatever `z(t)` is. **The warm-up takes precedence over the non-finite rule.**
+5. **Calibration** uses these scores as they are, so warm-up steps inside a safe window contribute 0. A rollout with an empty safe window still contributes −1, as in freeze-v2.
+6. **Alarms** are searched for only at `t > 10`: `t_signal` = the first `t` in `11..H` with `own_score(t) > τ`, or `H` if there is none. This holds for any finite threshold, including a negative or zero one, because setting warm-up scores to 0 alone does not guarantee silence when `τ < 0`. If `H ≤ 10`, no alarm can fire and `t_signal = H`. The freeze-v2 `first_alarm` is left unchanged and is not used for own-scores.
+7. **Thresholds** must be finite. A NaN or infinite threshold is reported as an error naming the signal, and nothing is scored with it.
+
+What follows from these rules:
+
+- **Early failures stay counted.** A rollout with `t_fail ≤ 10` stays among the failing rollouts. Its `t_signal ≥ 11`, so its lead time is negative: a miss for every own-scored signal. The clock is unaffected.
+- **A broken baseline** gives `own_score(t) = +∞` for every `t > 10`, so the alarm fires at step 11, provided `τ` is finite and `H ≥ 11`.
+- **A blow-up after step 10** gives `+∞` at that step, so the alarm fires there unless it already fired earlier.
+
+### A4. This milestone
+
+- **Implementation:** at most three new files, about 200 lines in total: `src/own_scores.py` (own-scores and the warm-up alarm), `configs/successor.yaml` (warm-up length and the fresh seeds and IDs from §4) and `tests/test_own_scores.py` (synthetic checks). No freeze-v2 file is edited.
+- **Checks:** synthetic arrays only. No rollout data is read, no data is generated, and no model is loaded or trained. This replaces §8 step 2: the fast config is not run in this milestone.
+- **Synthetic cases:** finite and non-finite warm-up values; negative, zero and positive finite thresholds; early failures kept as misses; a broken baseline giving the step-11 alarm (finite `τ`, `H ≥ 11`); a blow-up after step 10; the horizon fallback when no alarm fires; and invalid (non-finite) thresholds reported as errors.
+- **Handoff:** the commit, its diff, the test command and the unedited test output go to the lab. The freeze (`freeze-s1`) and any run need separate agreement.
+- **Cap:** about one week. If the work outgrows the three files or about 200 lines, it stops and is reported back.
